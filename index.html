@@ -1,0 +1,886 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Последний рубеж — одиночная изометрическая стратегия о выживании автономной колонии. Работает без интернета.">
+<meta name="theme-color" content="#101a27">
+<title>ПОСЛЕДНИЙ РУБЕЖ · Первый форпост</title>
+<style>:root{color-scheme:dark;--bg:#101a27;--panel:#101d29ed;--border:#809d9d25;--text:#e0e7e3;--muted:#8b9eab;--cyan:#7ec9d6;--green:#8ad2b4;--amber:#e5b57a;--red:#ee9585;font-family:"Segoe UI",Arial,sans-serif;font-size:13px}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#675344;color:var(--text)}button{font:inherit;color:inherit;cursor:pointer;background:transparent;border:0;padding:0}button:focus-visible,canvas:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}button:disabled{cursor:default;opacity:.4}button svg{pointer-events:none}svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}button:hover{color:#fff}.panel{background:var(--panel);border:1px solid var(--border);box-shadow:0 5px 22px #09131c17;backdrop-filter:blur(13px)}#world{position:fixed;inset:0;width:100%;height:100%;touch-action:none;outline:none}.grain{position:fixed;inset:0;pointer-events:none;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23n)' opacity='.6' d='M0 0h160v160H0z'/%3E%3C/svg%3E")}.topbar{position:fixed;inset:0 0 auto;display:flex;align-items:center;height:68px;gap:22px;padding:0 25px;border-width:0 0 1px;z-index:4;background:#101c29f5}.brand{display:flex;align-items:center;gap:12px;flex-shrink:0}.brand-mark{position:relative;height:32px;width:34px;transform:skewY(-25deg);border:1px solid #8bd9ce80;display:flex;align-items:center;gap:3px;padding:5px}.brand-mark i{height:19px;background:#9ed6c3;width:5px}.brand-mark i:nth-child(2){height:14px}.brand-mark i:nth-child(3){height:9px}.brand h1{font-size:16px;letter-spacing:2px;line-height:1.3;margin:0;font-weight:600}.brand>div>span{font-size:8px;letter-spacing:2.25px;color:#899ea8;display:block;margin-top:5px}.location{display:flex;gap:10px;align-items:center;margin-left:14px;font-size:10px;letter-spacing:1.7px;color:#bdc9c8}.location small{display:block;letter-spacing:1.1px;font-size:8px;color:#7c919e;margin-top:5px}.signal{display:flex;gap:2px;height:17px;align-items:end}.signal i{width:2px;background:#83baaa;height:4px}.signal i:nth-child(2){height:7px}.signal i:nth-child(3){height:10px}.signal i:nth-child(4){height:13px}.time-section{display:flex;gap:13px;align-items:center;margin-left:auto}.sun-symbol{font-size:25px;color:var(--amber)}#sol-time{font-size:13px;letter-spacing:1.3px;white-space:nowrap}#sol-time em{font-style:normal;color:#b5c7cb;padding-left:10px;font-weight:400}#day-label{display:block;color:#8397a3;font-size:9px;margin-top:4px}.speed-controls{display:flex;gap:3px;margin-left:5px;border-left:1px solid #8ca3a525;padding-left:12px}.speed-controls button{height:29px;min-width:29px;color:#96a8b2;font-size:11px;border-radius:2px}.speed-controls button.active{background:#7ec9c918;color:#ace2d2;border:1px solid #84c5c549}.speed-controls button:hover{background:#abc9cf12}.top-action{display:flex;align-items:center;gap:7px;font-size:11px;color:#9eb2ba;white-space:nowrap;height:36px}.top-action:first-of-type{margin-left:0;border-left:1px solid #8ca3a525;padding-left:19px}.top-action svg{width:16px;height:16px}.resource-bar{position:fixed;top:68px;left:0;right:0;height:69px;z-index:4;display:flex;border-width:0 0 1px;backdrop-filter:blur(12px);background:#172633ed}.resource-list{display:flex;flex:1;padding:0 16px}.resource{display:flex;align-items:center;gap:12px;flex:1;position:relative;padding:11px 16px;border-right:1px solid #94afb317;min-width:0}.resource-icon{color:var(--cyan);opacity:.95}.resource-icon svg{width:24px;height:24px}.resource[data-resource=food] .resource-icon{color:#a2c39b}.resource[data-resource=ice] .resource-icon{color:#a6cbd1}.resource[data-resource=metal] .resource-icon{color:#b9afa0}.resource[data-resource=electronics] .resource-icon{color:#b9b3c8}.resource strong{font-size:20px;font-weight:500;letter-spacing:.6px;line-height:1}.resource .cap{color:#687f8c;font-size:9px;margin-left:5px}.resource .res-name{font-size:8px;letter-spacing:1.4px;color:#849ca8;display:block;margin-top:6px;white-space:nowrap}.resource .res-rate{font-size:10px;margin-left:auto;align-self:center;white-space:nowrap;color:var(--green);text-align:right}.resource .res-rate.negative{color:#d2ae87}.resource .res-rate small{display:block;color:#728c9a;font-size:8px;line-height:1.6}.resource.critical strong,.resource.critical .res-rate{color:var(--red)}.crew{display:flex;align-items:center;gap:12px;padding:0 25px 0 15px;width:220px;flex-shrink:0;text-align:left}.crew>span{color:#afc2bf}.crew>div>b{font-size:20px;font-weight:500;line-height:1}.crew small{font-size:10px;color:#738c99}.crew>div>span{display:block;font-size:8px;letter-spacing:1.3px;color:#849ca8;margin-top:6px}.health-mini{margin-left:auto;text-align:right;width:42px}.health-mini>span{font-size:11px!important;letter-spacing:0!important;color:var(--green)!important;margin-top:0!important}.health-mini i{display:block;background:#0a151d;height:3px;margin-top:7px}.health-mini i b{display:block;width:100%;background:var(--green);height:100%}.overlays{pointer-events:none;position:fixed;inset:0}.overlays button,.overlays canvas{pointer-events:auto}.left-stack,.right-stack{position:absolute;top:156px;width:232px;pointer-events:none}.left-stack{left:23px}.right-stack{right:23px;width:224px}.left-stack>.panel,.right-stack>.panel{pointer-events:auto}.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;color:#91a6b2;letter-spacing:1.3px;font-size:8px;font-weight:500;text-align:left}.section-head b{font-size:14px;font-weight:400;color:#a5b9c0}.section-head>span{display:flex;align-items:center;gap:7px}.section-head svg{height:14px;width:14px}.mission{padding:16px 16px 15px;border-top:2px solid #8fc5b68a}.small-dot{height:4px;width:4px;background:var(--green);display:inline-block}.small-dot.cyan{background:var(--cyan)}.mission-title{font-size:21px;font-weight:400;line-height:1;margin-top:21px;display:flex;align-items:center;justify-content:space-between;letter-spacing:-.2px}.mission-title>span{font-size:28px;line-height:1;color:#a6d5c41a;font-weight:600}.muted{color:#91a3ab;line-height:1.6}.mission-copy{font-size:11px;margin:13px 0 18px}.objective{display:flex;gap:10px;align-items:center;margin:11px 0;width:100%;text-align:left;color:#aebfc3;font-size:11px;line-height:1.4}.objective i{border:1px solid #6e8d9880;width:14px;height:14px;display:grid;place-items:center;font-size:10px;flex-shrink:0;font-style:normal;color:#3c585f;border-radius:50%}.objective.done{color:#7e9b9a}.objective.done i{border-color:#78bf9c66;background:#7abf9f11;color:#91d2af}.objective.current{color:#e0e7dd}.objective.current i{border-color:#93c7bc;color:#b2dbca}.objective small{display:block;color:#718b97;font-size:9px;margin-top:1px}.mission-progress{margin-top:19px;padding-top:14px;border-top:1px solid #85a1ab20}.mission-progress>div{display:flex;justify-content:space-between;align-items:center;font-size:8px;letter-spacing:1.1px;color:#91a8b2}.mission-progress>div b{font-size:10px;color:#badccc;font-weight:400}.mission-progress>i{height:3px;background:#08141d;display:block;margin-top:9px}.mission-progress>i b{display:block;height:3px;width:0;background:#a5caba;transition:width .4s}.mission-progress>span{display:block;margin-top:9px;color:#6e8794;font-size:9px}.log{margin-top:12px;padding:14px 16px 7px;background:#101c28d9}.log .section-head{font-size:8px}.text-button{color:#829ca7;font-size:16px;line-height:1}.event{display:block;text-align:left;margin:13px 0 12px;padding-left:10px;border-left:2px solid #7198a34a;font-size:10px;line-height:1.55;color:#aabcc1;width:100%}.event.warning{border-color:#d9ae6f9c}.event.danger{border-color:#e5937d}.event.success{border-color:#91ccb077}.event small{display:block;font-size:8px;color:#65808e;margin-bottom:4px}.power{padding:15px 16px 12px}.power-values{display:flex;align-items:center;gap:19px;margin:18px 0 14px}.power-values>div{flex:1}.power-values b{font-size:27px;font-weight:400;line-height:1;color:#accfc2}.power-values>div:last-child b{color:#c4d2d3}.power-values small{display:block;font-size:7px;color:#809aa6;letter-spacing:.6px;margin-top:7px;white-space:nowrap}.power-slash{font-size:25px;font-weight:200;color:#506b7a}.battery-row{display:flex;align-items:center;gap:8px}.battery-row svg{width:15px;height:15px;color:#9fc3b4}.battery-row>i{height:4px;background:#09151e;flex:1}.battery-row>i>b{height:100%;display:block;background:#8fbda8;width:0;transition:width .3s}.battery-row>span:last-child{font-size:9px;color:#adbfbe;white-space:nowrap}.power>p{font-size:9px;line-height:1.5;color:#bba47c;margin:11px 0 0}.inspector{margin-top:12px;padding:15px 16px;max-height:calc(100vh - 510px);overflow-y:auto;scrollbar-width:thin}.inspector h2{font-size:16px;line-height:1.3;letter-spacing:.2px;font-weight:500;margin:15px 0 8px}.status-line{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--green);margin-bottom:14px}.status-line.warning{color:var(--amber)}.status-line:before{content:'';width:4px;height:4px;background:currentColor}.detail-row{display:flex;justify-content:space-between;gap:10px;font-size:10px;color:#849ca7;line-height:1.5;margin:7px 0}.detail-row b{font-weight:400;color:#bdcecc;text-align:right}.detail-note{font-size:10px;color:#8ea4ab;line-height:1.6}.inspector-actions{display:flex;gap:7px;margin-top:15px}.action-button{padding:8px 11px;background:#91c7bc12;border:1px solid #86b5ae36;font-size:10px;color:#b6d8cc;line-height:1.4}.action-button:hover{background:#91c7bc25}.action-button.danger{border-color:#c98b7438;color:#d7a490;background:#c98b7410}.action-button.primary{background:#a3d0bd;color:#173132;border-color:#a3d0bd;font-weight:600}.action-button.primary:hover{background:#b7ddc8}.action-button.full{width:100%}.map-label{position:absolute;top:157px;left:50%;transform:translateX(-50%);text-align:center;text-shadow:0 1px 4px #1d2e34}.eyebrow{display:block;color:#f1e6cd;font-size:9px;letter-spacing:3.6px}#map-caption{display:block;font-size:8px;color:#dccbb1;letter-spacing:1.8px;margin-top:9px}#map-caption i{font-style:normal;margin-left:15px;font-size:7px;color:#cbd9bf}.map-tools{display:flex;align-items:center;position:absolute;right:23px;bottom:192px;height:31px;gap:0;background:#101d29e8}.map-tools button{width:31px;height:29px;color:#a6babe;font-size:18px}.map-tools button:first-child{border-right:1px solid #93a9ab26}.map-tools button:last-child{border-left:1px solid #93a9ab26}.map-tools button.active{color:#c3e8d6;background:#9ac9bc22}.map-tools svg{width:15px;height:15px}.map-tools span#zoom-label{font-size:9px;min-width:35px;text-align:center;color:#97aeb8}.minimap{position:absolute;right:23px;bottom:233px;padding:9px 10px 6px;width:182px;background:#101d29e8}.minimap>div{display:flex;justify-content:space-between;font-size:7px;letter-spacing:1.2px;color:#91a8ae;margin-bottom:5px}.minimap b{font-size:7px;color:#718c98;font-weight:400}.minimap canvas{display:block;cursor:crosshair;width:160px;height:100px}.build-dock{position:fixed;bottom:29px;left:23px;right:23px;z-index:3;padding:0 16px 11px;background:#101d29f5}.dock-head{display:flex;align-items:center;height:41px;gap:32px;border-bottom:1px solid #8aa5aa20;margin-bottom:9px}.dock-title{display:flex;align-items:center;gap:10px;font-size:9px;letter-spacing:1.5px;color:#9fb2b9}.dock-title svg{width:15px;height:15px}.dock-title b{font-weight:500}.dock-title>span:last-child{font-size:9px;color:#6c8b98;margin-left:5px}.dock-head nav{display:flex;height:100%;gap:26px}.dock-head nav>button{position:relative;color:#7f9aa7;font-size:10px}.dock-head nav>button.active{color:#c0ddcf}.dock-head nav>button.active:after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:#a4ccbb}.dock-head nav small{font-size:8px;background:#8bbba917;color:#93bdaf;margin-left:6px;padding:1px 4px}.dock-collapse{margin-left:auto;padding:8px}.build-cards{display:flex;gap:9px;min-height:95px}.build-card{position:relative;flex:1;max-width:210px;min-width:112px;display:flex;align-items:center;text-align:left;background:#839caa08;border:1px solid #829ba222;padding:7px 8px;height:95px;overflow:hidden;transition:background .15s,border-color .15s}.build-card:hover{background:#8bbfb215;border-color:#91bcb357}.build-card.active{background:#9cc9b51c;border-color:#a3d3bbab}.build-card.unaffordable{opacity:.57}.build-card canvas{width:96px;height:66px;position:absolute;right:-3px;top:-6px;opacity:.94;pointer-events:none}.build-card .build-name{font-size:11px;line-height:1.3;position:absolute;left:9px;top:12px;max-width:78px;color:#c0cfcf;z-index:1;text-shadow:0 1px 4px #101d29}.build-card .build-power{position:absolute;top:46px;left:9px;color:#7b9ba7;font-size:8px;z-index:1}.build-card .cost-line{position:absolute;bottom:9px;left:9px;right:9px;display:flex;align-items:center;gap:10px;color:#b2c1bc;font-size:10px;z-index:1}.cost-line span{display:flex;align-items:center;gap:4px}.cost-line svg{width:11px;height:11px;color:#7e959d}.cost-line .shortcut{margin-left:auto;color:#506d7b;font-size:8px}.build-dock.collapsed{padding-bottom:0}.build-dock.collapsed .build-cards{display:none}.build-dock.collapsed .dock-head{margin-bottom:0;border-bottom:0}.bottom-strip{position:fixed;bottom:0;left:0;right:0;height:29px;background:#0d1823f5;color:#77929f;display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:4;font-size:8px;letter-spacing:.2px}.bottom-strip kbd{font-family:inherit;font-size:8px;letter-spacing:1px;color:#a5b7b8}#save-status i{font-style:normal;color:#8ab8a1;font-size:6px;margin-left:6px}.version{font-size:7px;letter-spacing:1.3px;color:#5b7889}.build-hint{position:fixed;bottom:204px;left:50%;transform:translateX(-50%);padding:10px 17px;color:#bbd9cd;font-size:11px;z-index:3;max-width:calc(100vw - 500px);text-align:center;line-height:1.5}.build-hint small{display:block;color:#7896a1;font-size:9px;margin-top:4px}.build-hint kbd{font-family:inherit;color:#cce4d8}.toasts{position:fixed;left:50%;top:202px;transform:translateX(-50%);display:flex;flex-direction:column;gap:8px;z-index:10;pointer-events:none}.toast{background:#11232bf2;color:#c2ddcf;padding:12px 20px;max-width:500px;box-shadow:0 5px 30px #0002;border:1px solid #90bcb445;font-size:12px;animation:toast-in .2s ease}.toast.warning{border-color:#d0a76f70;color:#e2be8f}.toast.danger{border-color:#d58d7370;color:#e6a994}@keyframes toast-in{from{transform:translateY(-8px);opacity:0}to{transform:translateY(0);opacity:1}}dialog{background:#11202cfa;color:var(--text);border:1px solid #8eb3b24d;padding:0;width:min(560px,calc(100vw - 32px));max-height:calc(100vh - 40px);box-shadow:0 20px 100px #0008;scrollbar-width:thin}dialog::backdrop{background:#07131c99;backdrop-filter:blur(5px)}.modal-inner{padding:31px 34px}.modal-kicker{font-size:9px;letter-spacing:2px;color:#9bc6b6;margin:0 0 14px}.modal-inner h2{font-size:29px;line-height:1.2;font-weight:400;letter-spacing:-.5px;margin:0 0 16px}.modal-inner p{font-size:12px;color:#91a8b0;line-height:1.7;margin:0 0 20px}.modal-inner .intro-number{font-size:12px;color:#bad9c7;min-width:25px}.intro-step{display:flex;gap:12px;padding:16px 0;border-top:1px solid #89a8ad22}.intro-step b{font-size:12px;font-weight:500;color:#cedbd6}.intro-step p{font-size:11px;margin:5px 0 0;line-height:1.55}.modal-actions{display:flex;gap:9px;margin-top:25px}.modal-actions button{flex:1;padding:11px 15px;font-size:11px}.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}.menu-grid button{padding:14px;font-size:11px}.controls-table{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:15px}.controls-table td{padding:10px 0;border-bottom:1px solid #84a3aa18;color:#91aab4}.controls-table td:first-child{color:#c7d7d1}.modal-log{max-height:55vh;overflow:auto}.modal-log .event{padding:9px 12px;margin:7px 0}.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}.stat-grid>div{background:#88ada810;border:1px solid #88ada820;padding:15px}.stat-grid b{display:block;font-weight:400;font-size:24px;color:#c4dfce}.stat-grid span{display:block;font-size:9px;margin-top:8px;color:#7f9da9;letter-spacing:1px}[hidden]{display:none!important}button[aria-pressed=true]{color:#b3decb}::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#729eac50}@media(min-width:1600px){.topbar{padding:0 32px;gap:30px}.left-stack{left:30px;width:246px}.right-stack{right:30px;width:239px}.build-dock{left:30px;right:30px;padding-left:20px;padding-right:20px}.build-card{max-width:none;height:106px}.build-card canvas{width:126px;height:86px;right:2px;top:-9px}.build-card .build-name{font-size:12px;max-width:99px;top:14px}.build-card .build-power{top:53px}.build-cards{min-height:106px}.map-tools{bottom:204px;right:30px}.minimap{bottom:245px;right:30px}.build-hint{bottom:214px}.resource{padding-left:25px;padding-right:25px}.resource strong{font-size:23px}.mission-title{font-size:23px}}@media(max-width:1250px){.location{display:none}.resource{padding:10px 11px;gap:8px}.resource .res-rate{font-size:9px}.resource-icon svg{width:20px;height:20px}.crew{width:185px;padding-right:17px}.resource strong{font-size:18px}.left-stack{width:214px}.right-stack{width:211px}.build-card canvas{right:-16px;width:92px}.build-card .build-name{font-size:10px;max-width:72px}.build-cards{gap:6px}.build-card{min-width:100px}.map-label{display:none}}@media(max-height:820px){.mission-copy{display:none}.mission-title{font-size:19px;margin-top:16px;margin-bottom:17px}.objective{margin:9px 0;font-size:10px}.mission-progress{margin-top:15px;padding-top:11px}.log{padding-top:11px}.event{font-size:9px;margin:11px 0}.log #event-feed .event:nth-child(n+2){display:none}.inspector{max-height:calc(100vh - 508px)}.minimap{width:157px;padding:8px}.minimap canvas{width:139px;height:86px}.power-values{margin-top:14px;margin-bottom:11px}.power{padding-top:13px}.left-stack,.right-stack{top:153px}}@media(max-width:1000px){.wide-label{display:none}.topbar{gap:17px;padding:0 18px}.brand h1{font-size:13px}.brand>div>span{font-size:7px}.resource .res-rate small,.resource .cap{display:none}.resource .res-rate{position:absolute;right:10px;top:15px;font-size:8px}.resource{gap:8px;padding:10px}.resource strong{font-size:17px}.resource .res-name{font-size:7px}.resource-icon svg{width:17px;height:17px}.resource-list{padding:0 6px}.crew{width:154px;gap:9px;padding-right:10px}.crew>div>b{font-size:17px}.crew>div>span{font-size:7px}.health-mini{width:32px}.left-stack{left:15px;width:196px}.right-stack{right:15px;width:195px}.mission,.power{padding-left:13px;padding-right:13px}.build-dock{left:15px;right:15px;padding-left:11px;padding-right:11px}.dock-head{gap:20px}.dock-head nav{gap:18px}.build-cards{overflow-x:auto}.build-card{min-width:113px;flex:0 0 118px}.build-hint{max-width:calc(100vw - 420px)}.map-tools,.minimap{right:15px}.version{display:none}}@media(max-width:700px){.brand h1{font-size:11px;letter-spacing:1px}.brand-mark{display:none}.brand>div>span{font-size:6px}.topbar{padding:0 12px;gap:12px;height:58px}.time-section{gap:7px}.sun-symbol,#day-label{display:none}.speed-controls{padding-left:6px;gap:1px;margin-left:0}.speed-controls button{min-width:24px;width:24px;font-size:10px}#sol-time{font-size:10px;letter-spacing:.4px}#sol-time em{display:block;padding-left:0;font-size:9px;margin-top:4px}.top-action:first-of-type{border:0;padding:0}.resource-bar{top:58px;height:62px}.resource-list{overflow-x:auto;scrollbar-width:none}.resource{flex:0 0 88px;padding-left:8px;gap:6px}.resource strong{font-size:16px}.resource .res-rate{right:4px;font-size:7px}.crew{width:105px;padding:0 8px}.crew>span,.health-mini{display:none}.crew>div>span{font-size:6px}.left-stack{top:133px;left:10px;width:171px}.right-stack{right:10px;top:133px;width:166px}.mission{padding:12px}.section-head{font-size:7px;letter-spacing:.8px}.mission-title{font-size:17px;margin-bottom:13px}.mission-title>span{font-size:22px}.objective{font-size:9px;margin:9px 0;gap:7px}.objective small{font-size:8px}.mission-progress>span{font-size:8px}.log{display:none}.power{padding:12px}.power-values{gap:7px}.power-values b{font-size:22px}.power-values small{font-size:6px}.power>p{font-size:8px}.battery-row>span:last-child{font-size:8px}.minimap{display:none}.inspector{padding:12px;max-height:calc(100vh - 442px)}.inspector h2{font-size:13px}.detail-row,.detail-note{font-size:9px}.inspector-actions{flex-direction:column}.build-dock{left:10px;right:10px;bottom:26px;padding:0 9px 9px}.dock-head{gap:16px;height:35px;margin-bottom:7px}.dock-title b{display:none}.dock-title{gap:3px}.dock-head nav{gap:15px}.dock-head nav>button{font-size:9px}.build-card{height:85px;min-width:117px}.build-cards{min-height:85px}.bottom-strip{height:26px;padding:0 12px;font-size:7px}.footer-detail{display:none}.map-tools{right:10px;bottom:170px}.build-hint{bottom:170px;font-size:10px;max-width:calc(100vw - 30px);width:300px}.build-hint small{font-size:8px}.toasts{top:130px;max-width:90vw;width:max-content}.toast{font-size:11px;max-width:90vw}.modal-inner{padding:25px}.modal-inner h2{font-size:25px}.menu-grid button{font-size:10px}}@media(max-height:660px){.mission-progress{display:none}.left-stack{width:183px}.objective small{display:none}.mission-title{margin:13px 0}.objective{margin:7px 0}.minimap{display:none}.power>p{display:none}.inspector{max-height:calc(100vh - 444px)}.log{display:none}}
+/* Keep the overview clear of the inspector on short displays. */
+.overlays:has(#inspector:not([hidden])) .minimap{display:none}
+
+.modal-alert{margin:12px 0;font-size:11px;line-height:1.5;max-width:none}
+</style>
+</head>
+<body>
+<canvas id="world" aria-label="Изометрическая карта колонии. WASD — камера, колесо — масштаб, ЛКМ — выбор и строительство." tabindex="0"></canvas>
+<div class="grain" aria-hidden="true"></div>
+<header class="topbar panel">
+  <div class="brand"><div class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></div><div><h1>ПОСЛЕДНИЙ РУБЕЖ</h1><span>ЭКСПЕДИЦИЯ «РУБЕЖ-1»</span></div></div>
+  <div class="location"><span class="signal"><i></i><i></i><i></i><i></i></span><span>КЕПЛЕР-186f<small>СЕКТОР 07 · ПЕРВЫЙ ФОРПОСТ</small></span></div>
+  <div class="time-section"><span id="sun-symbol" class="sun-symbol">☀</span><div><b id="sol-time">СОЛ 01 <em>08:00</em></b><small id="day-label">Световой период</small></div><div class="speed-controls" aria-label="Скорость симуляции"><button data-speed="0" id="pause-btn" title="Пауза / продолжить · Пробел" aria-label="Пауза">Ⅱ</button><button data-speed="1">1×</button><button data-speed="2">2×</button><button data-speed="4">4×</button></div></div>
+  <button class="top-action" id="save-btn" title="Сохранить колонию · Ctrl+S"><span data-icon="save"></span><span class="wide-label">Сохранить</span></button>
+  <button class="top-action" id="menu-btn" title="Меню, сохранения и управление"><span data-icon="menu"></span><span class="wide-label">Меню</span></button>
+</header>
+<section class="resource-bar panel" aria-label="Ресурсы колонии">
+  <div id="resource-list" class="resource-list"></div>
+  <button id="crew-btn" class="crew" title="Состояние экипажа"><span data-icon="crew"></span><div><b id="crew-count">8 <small>/ 8</small></b><span>КОЛОНИСТЫ</span></div><div class="health-mini"><span id="health-text">100%</span><i><b id="health-fill"></b></i></div></button>
+</section>
+<main class="overlays">
+  <aside class="left-stack">
+    <section class="mission panel" id="mission-panel"><button class="section-head" id="mission-toggle" aria-expanded="true"><span><i class="small-dot"></i> ПРОТОКОЛ ВЫЖИВАНИЯ</span><b id="mission-collapse">−</b></button><div id="mission-body"><div class="mission-title">Первый форпост<span>01</span></div><p class="muted mission-copy">Постройте систему, которая<br>сохранит жизнь вдали от Земли.</p><div id="objectives"></div><div class="mission-progress"><div><span>АВТОНОМНОСТЬ</span><b id="mission-percent">0%</b></div><i><b id="mission-fill"></b></i><span id="mission-elapsed">0,0 / 5 солов в экспедиции</span></div></div></section>
+    <section class="log panel"><div class="section-head"><span>ЖУРНАЛ КОЛОНИИ</span><button class="text-button" id="log-btn" title="Все события">↗</button></div><div id="event-feed"></div></section>
+  </aside>
+  <aside class="right-stack">
+    <section class="power panel" id="power-panel"><div class="section-head"><span><i class="small-dot cyan"></i> ЭНЕРГОСИСТЕМА</span><span data-icon="bolt"></span></div><div class="power-values"><div><b id="generation">15</b><small>ВЫРАБОТКА, кВт</small></div><span class="power-slash">/</span><div><b id="demand">2</b><small>НАГРУЗКА, кВт</small></div></div><div class="battery-row"><span data-icon="battery"></span><i><b id="battery-fill"></b></i><span id="battery-charge">0 / 0</span></div><p id="power-note">Аварийный источник: 24,0 ч</p></section>
+    <section class="inspector panel" id="inspector" hidden></section>
+  </aside>
+  <div class="map-label"><span class="eyebrow">ЗОНА ВЫСАДКИ / 07</span><span id="map-caption">32° N · 64° E <i>● КАНАЛ СТАБИЛЕН</i></span></div>
+  <div class="map-tools panel"><button id="center-btn" title="Вернуться к посадочному модулю · Home" aria-label="Центрировать базу"><span data-icon="target"></span></button><button id="zoom-in" title="Приблизить" aria-label="Приблизить">+</button><span id="zoom-label">110%</span><button id="zoom-out" title="Отдалить" aria-label="Отдалить">−</button><button id="grid-btn" title="Показать сетку · G" aria-label="Показать сетку"><span data-icon="grid"></span></button></div>
+  <div class="minimap panel"><div><span>ОБЗОР СЕКТОРА</span><b>64 × 64</b></div><canvas id="minimap" width="160" height="100" role="button" tabindex="0" aria-label="Миникарта. Нажмите, чтобы переместить камеру."></canvas></div>
+</main>
+<div id="toasts" class="toasts" aria-live="polite"></div>
+<div id="build-hint" class="build-hint panel" hidden></div>
+<section class="build-dock panel" id="build-dock" aria-label="Строительство">
+  <div class="dock-head"><div class="dock-title"><span data-icon="build"></span><b>СООРУЖЕНИЯ</b><span id="building-count">01</span></div><nav id="categories" aria-label="Категории зданий"><button data-category="all" class="active">Все <small>7</small></button><button data-category="energy">Энергия</button><button data-category="life_support">Жизнь</button><button data-category="extraction">Добыча</button><button data-category="housing">Жильё</button></nav><button class="text-button dock-collapse" id="dock-toggle" title="Свернуть строительство · B">⌄</button></div>
+  <div class="build-cards" id="build-cards"></div>
+</section>
+<footer class="bottom-strip"><span><kbd>W A S D</kbd> камера <span class="footer-detail">· Колесо — масштаб · ЛКМ — выбор · <kbd>Пробел</kbd> пауза</span></span><span id="save-status">Локальная экспедиция <i>●</i></span><span class="version">MVP 0.1 · OFFLINE</span></footer>
+<dialog id="modal" aria-labelledby="modal-title"><div id="modal-content"></div></dialog>
+<input type="file" id="import-input" accept=".json,application/json" hidden>
+<script>globalThis.FRONTIER_BALANCE = {"_note":"Предварительный баланс, игровые величины; перед релизом требуется тест достижимости.","schemaVersion":1,"scenario":{"id":"first_outpost","name":"Первый форпост","mapWidth":64,"mapHeight":64,"defaultSeed":1862189,"startingSol":1,"startingHour":8,"solDurationGameHours":24,"realSecondsPerSolAt1x":240,"availableSpeeds":[0,1,2,4],"initialColonists":8,"initialAverageHealth":100,"startingInventory":{"water":24,"oxygen":24,"food":20,"ice":0,"metal":130,"electronics":30},"resourceCapacities":{"water":100,"oxygen":100,"food":100,"ice":100,"metal":999,"electronics":999},"firstIceDepositMinimum":3000,"startingLandingModule":"center of map on buildable plateau","iceDepositGuaranteedWithinGridRadius":10,"missionDurationSols":5,"winRequires":["aliveColonists>0","water>0","oxygen>0","food>0","operational:ice_extractor","operational:water_purifier","operational:oxygen_generator","operational:greenhouse"]},"population":{"consumptionPerColonistPerSol":{"water":1,"oxygen":1,"food":0.5},"averageHealthRange":[0,100],"healthLossPointsPerGameHourWhenMissing":{"oxygen":1.0,"water":0.45,"food":0.25},"healthRecoveryPointsPerGameHourWhenAllNeedsMet":0.12,"healthRecoveryBonusPerPoweredHabitatPerGameHour":0.05,"deaths":"MVP: if average health reaches zero, entire initial crew is lost; individual agents later"},"power":{"daylightStartHourInclusive":6,"daylightEndHourExclusive":18,"landingModuleEmergencyGenerationKw":15,"landingEmergencyDurationElapsedGameHours":24,"landingAreaConnectionRadiusGridCells":10,"batteryChargeDischargeEfficiency":1.0,"disconnectionRule":"In MVP all active buildings must be within grid radius 10 of landing module; unified electric bus","loadShedOrder":["landing_module","oxygen_generator","water_purifier","greenhouse","ice_extractor","habitat"],"unitExplanation":"Kw = instantaneous power; kWh = stored/accumulated energy; all recipes are per 24 game hours"},"buildingTypes":[{"id":"landing_module","name":"Посадочный модуль","category":"base","size":[3,3],"buildable":false,"cost":{},"powerDemandKw":2,"housingCapacity":8,"recipePerSol":{},"special":["emergency power first 24 game hours","network hub radius 10","initial storage"],"priority":1},{"id":"solar_panel","name":"Солнечная панель","category":"energy","size":[2,2],"buildable":true,"cost":{"metal":12,"electronics":2},"powerDemandKw":0,"powerGenerationKwDay":36,"powerGenerationKwNight":0,"recipePerSol":{},"priority":0},{"id":"battery","name":"Аккумулятор","category":"energy","size":[2,2],"buildable":true,"cost":{"metal":14,"electronics":4},"powerDemandKw":0,"energyCapacityKwh":300,"maxChargeDischargeKw":36,"initialChargeKwhOnBuild":0,"recipePerSol":{},"priority":0},{"id":"ice_extractor","name":"Ледодобывающая установка","category":"extraction","size":[2,2],"buildable":true,"cost":{"metal":14,"electronics":2},"powerDemandKw":4,"placement":"requires ice deposit under at least one footprint tile","recipePerSol":{"inputs":{},"outputs":{"ice":18}},"priority":5,"depositConsumptionPerSol":18,"special":["Depletes underlying finite ice deposit by 18 units per sol at full production"]},{"id":"water_purifier","name":"Очиститель воды","category":"life_support","size":[2,2],"buildable":true,"cost":{"metal":10,"electronics":3},"powerDemandKw":3,"recipePerSol":{"inputs":{"ice":16},"outputs":{"water":16}},"priority":3},{"id":"oxygen_generator","name":"Кислородный генератор","category":"life_support","size":[2,2],"buildable":true,"cost":{"metal":12,"electronics":3},"powerDemandKw":3,"recipePerSol":{"inputs":{"water":2},"outputs":{"oxygen":12}},"priority":2},{"id":"greenhouse","name":"Гидропонная теплица","category":"life_support","size":[3,2],"buildable":true,"cost":{"metal":18,"electronics":4},"powerDemandKw":5,"recipePerSol":{"inputs":{"water":3},"outputs":{"food":6}},"priority":4},{"id":"habitat","name":"Жилой модуль","category":"housing","size":[2,2],"buildable":true,"cost":{"metal":20,"electronics":2},"powerDemandKw":2,"housingCapacity":8,"recipePerSol":{},"special":["additional capacity","health recovery bonus when powered"],"priority":6}],"buildingRules":{"demolitionRefundRate":0.5,"allCostsChargedOnce":true,"defaultOperationalState":"on","cannotBuildOnOccupiedTiles":true,"requiresConnectionWithinBaseRange":true,"requiresIceDepositForExtractor":true},"balanceSanity":{"steadyStateSetup":["landing_module","solar_panel","battery","ice_extractor","water_purifier","oxygen_generator","greenhouse"],"dailyElectricityDemandKwh":408,"solarProductionKwhPerSol":432,"nightElectricityDemandKwh":204,"batteryCapacityKwh":300,"netResourceChangesPerSolAtEightColonists":{"ice":2,"water":3,"oxygen":4,"food":2},"note":"При рабочем наборе без жилого модуля. Для долгой работы жилого модуля может понадобиться вторая солнечная панель."}};</script>
+<script>/* Последний рубеж — deterministic simulation. No DOM or rendering dependencies. */
+(function (root) {
+  'use strict';
+  const DATA = root.FRONTIER_BALANCE;
+  const VERSION = '0.1.0';
+  const DT = 1 / 60; // one game minute, six fixed steps / real second at ×1
+  const EPS = 1e-8;
+  const TYPES = Object.fromEntries(DATA.buildingTypes.map(t => [t.id, t]));
+  const RESOURCES = Object.keys(DATA.scenario.startingInventory);
+  const REQUIRED = ['ice_extractor', 'water_purifier', 'oxygen_generator', 'greenhouse'];
+  const clone = v => JSON.parse(JSON.stringify(v));
+  const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
+  const finite = n => typeof n === 'number' && Number.isFinite(n);
+  function rng(seed) {
+    let a = seed >>> 0;
+    return () => {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      let t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  const key = (x, y) => y * DATA.scenario.mapWidth + x;
+  function generateWorld(seed) {
+    const random = rng(seed), tiles = [], deposits = [{id: 1, remaining: 3600, initial: 3600}];
+    const w = DATA.scenario.mapWidth, h = DATA.scenario.mapHeight;
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+      const safe = Math.hypot(x - 32, y - 32) < 12;
+      const noise = random();
+      const rock = !safe && (noise < .16 || (Math.sin(x * .41) + Math.cos(y * .36) > 1.1 && noise < .6));
+      tiles.push({terrain: rock ? 'rock' : 'sand', variation: random(), depositId: null});
+    }
+    // Guaranteed deposit: every possible 2×2 extractor here lies inside the base range.
+    for (let y = 30; y <= 33; y++) for (let x = 37; x <= 39; x++) {
+      tiles[key(x, y)] = {terrain: 'ice', variation: random(), depositId: 1};
+    }
+    for (const [cx, cy] of [[14,18], [45,46], [49,15]]) {
+      const id = deposits.length + 1;
+      deposits.push({id, remaining: 4500 + Math.floor(random() * 1500), initial: 6000});
+      for (let y = cy; y < cy + 3; y++) for (let x = cx; x < cx + 3; x++)
+        tiles[key(x, y)] = {terrain:'ice', variation:random(), depositId:id};
+    }
+    return {width:w, height:h, seed:seed >>> 0, tiles, deposits};
+  }
+  function makeBuilding(type, x, y, id, rotation = 0) {
+    return {id, type, x, y, rotation, enabled:true, charge:0, powered:false,
+      status:'Ожидание', efficiency:0, lastOperationalAt:-999,
+      workedHours:0, produced:{}};
+  }
+  function createState(seed = DATA.scenario.defaultSeed) {
+    const state = {
+      schemaVersion:DATA.schemaVersion, gameVersion:VERSION, mapSeed:seed >>> 0,
+      world:generateWorld(seed), buildings:[makeBuilding('landing_module',31,31,1)],
+      inventory:clone(DATA.scenario.startingInventory), population:{alive:8, health:100},
+      ticks:0, elapsedHours:0, nextId:2, speed:1, previousSpeed:1,
+      scenario:{won:false, lost:false, notified:[], milestones:{}, continued:false},
+      settings:{grid:false, camera:{x:0,y:0,zoom:1.1}},
+      events:[{id:1, hour:0, level:'info', text:'Высадка завершена. Экипаж: 8 человек.'}],
+      power:{generation:15, demand:2, served:2, charge:0, capacity:0, flow:0, unserved:0},
+      rates:Object.fromEntries(RESOURCES.map(r => [r,0]))
+    };
+    refresh(state);
+    return state;
+  }
+  function dimensions(b) {
+    const size = TYPES[b.type].size;
+    return b.rotation % 2 ? [size[1],size[0]] : [...size];
+  }
+  function cells(b) {
+    const [w,h] = dimensions(b), out = [];
+    for (let y=b.y; y<b.y+h; y++) for(let x=b.x; x<b.x+w; x++) out.push([x,y]);
+    return out;
+  }
+  function occupancy(state) {
+    const map = new Map();
+    for(const b of state.buildings) for(const [x,y] of cells(b)) map.set(key(x,y),b);
+    return map;
+  }
+  function connected(state,b) {
+    const hub = state.buildings.find(v => v.type === 'landing_module');
+    if (!hub) return false;
+    if (hub.id === b.id) return true;
+    const [w,h] = dimensions(hub), cx = hub.x+w/2, cy = hub.y+h/2;
+    return cells(b).every(([x,y]) => Math.hypot(x+.5-cx,y+.5-cy) <= DATA.power.landingAreaConnectionRadiusGridCells + EPS);
+  }
+  function depositFor(state,b) {
+    for (const [x,y] of cells(b)) {
+      const tile=state.world.tiles[key(x,y)];
+      if(tile && tile.depositId) {
+        const d=state.world.deposits.find(d=>d.id===tile.depositId);
+        if(d && d.remaining>EPS) return d;
+      }
+    }
+    return null;
+  }
+  function placement(state,type,x,y,rotation=0) {
+    const t=TYPES[type];
+    if(!t || !t.buildable) return {ok:false,reason:'Этот объект нельзя построить'};
+    if(!Number.isInteger(x)||!Number.isInteger(y)) return {ok:false,reason:'Выберите клетку карты'};
+    const b=makeBuilding(type,x,y,0,rotation), spots=cells(b), occupied=occupancy(state);
+    for(const [cx,cy] of spots) {
+      if(cx<0||cy<0||cx>=state.world.width||cy>=state.world.height) return {ok:false,reason:'Фундамент выходит за границу карты'};
+      if(occupied.has(key(cx,cy))) return {ok:false,reason:'Клетки заняты другим сооружением'};
+      if(state.world.tiles[key(cx,cy)].terrain==='rock') return {ok:false,reason:'Каменистый участок: нужен ровный грунт'};
+    }
+    if(!connected(state,b)) return {ok:false,reason:'Весь фундамент должен быть в радиусе 10 клеток от базы'};
+    if(type==='ice_extractor'&&!depositFor(state,b)) return {ok:false,reason:'Установите добытчик на залежь льда'};
+    for(const [r,n] of Object.entries(t.cost)) if(state.inventory[r]+EPS<n) return {ok:false,reason:`Недостаточно ${r==='metal'?'металла':'электроники'}: нужно ${n}`};
+    return {ok:true,reason:'Можно строить',building:b};
+  }
+  function addEvent(state,text,level='info',buildingId=null) {
+    state.events.unshift({id:(state.events[0]?.id||0)+1,hour:state.elapsedHours,text,level,buildingId});
+    state.events.length=Math.min(state.events.length,60);
+  }
+  function notifyOnce(state,id,text,level='warning',buildingId=null) {
+    if(state.scenario.notified.includes(id)) return;
+    state.scenario.notified.push(id); addEvent(state,text,level,buildingId);
+  }
+  function build(state,type,x,y,rotation=0) {
+    const check=placement(state,type,x,y,rotation);
+    if(!check.ok) return check;
+    for(const [r,n] of Object.entries(TYPES[type].cost)) state.inventory[r]-=n;
+    const b=check.building; b.id=state.nextId++;
+    b.charge=TYPES[type].initialChargeKwhOnBuild||0;
+    state.buildings.push(b);
+    state.scenario.milestones['built:'+type]=true;
+    addEvent(state,`${TYPES[type].name}: строительство завершено.`,'success',b.id);
+    refresh(state);
+    return {ok:true,building:b};
+  }
+  function demolish(state,id) {
+    const b=state.buildings.find(b=>b.id===id);
+    if(!b || b.type==='landing_module') return {ok:false,reason:'Посадочный модуль — опорный пункт колонии'};
+    for(const [r,n] of Object.entries(TYPES[b.type].cost)) state.inventory[r]=Math.min(DATA.scenario.resourceCapacities[r],state.inventory[r]+n*DATA.buildingRules.demolitionRefundRate);
+    state.buildings=state.buildings.filter(b=>b.id!==id);
+    addEvent(state,`${TYPES[b.type].name}: разобрано, возвращено 50% материалов.`,'info');
+    refresh(state); return {ok:true};
+  }
+  function toggle(state,id) {
+    const b=state.buildings.find(b=>b.id===id);
+    if(!b)return false;
+    b.enabled=!b.enabled; refresh(state); return true;
+  }
+  function hour(state) { return (DATA.scenario.startingHour+state.elapsedHours)%24; }
+  function daylight(state) { const h=hour(state); return h>=6-EPS&&h<18-EPS; }
+  function emergencyRemaining(state) { return Math.max(0,24-state.elapsedHours); }
+  // Allocates whole consumers by the explicit priority list. Storage obeys kW AND kWh limits.
+  function powerSystem(state,dt,mutate=true) {
+    const active=state.buildings.filter(b=>b.enabled&&connected(state,b));
+    const day=daylight(state);
+    let generation=active.reduce((n,b)=>n+(b.type==='solar_panel'?(day?36:0):0),0);
+    if(state.elapsedHours<24-EPS && active.some(b=>b.type==='landing_module')) generation+=15;
+    const batteries=active.filter(b=>b.type==='battery').sort((a,b)=>a.id-b.id);
+    const discharge=batteries.reduce((n,b)=>n+Math.min(36,b.charge/dt),0);
+    const consumers=active.filter(b=>TYPES[b.type].powerDemandKw>0)
+      .sort((a,b)=>TYPES[a.type].priority-TYPES[b.type].priority||a.id-b.id);
+    let available=generation+discharge, served=0, demand=0;
+    const powered=new Set();
+    for(const b of active) if(TYPES[b.type].powerDemandKw===0)powered.add(b.id);
+    for(const b of consumers) {
+      const load=TYPES[b.type].powerDemandKw; demand+=load;
+      if(available+EPS>=load){available-=load;served+=load;powered.add(b.id);}
+    }
+    let flow=0;
+    if(mutate){
+      let need=Math.max(0,served-generation)*dt;
+      for(const b of batteries){const amount=Math.min(need,b.charge,36*dt);b.charge=clamp(b.charge-amount,0,300);need-=amount;flow-=amount/dt;}
+      let surplus=Math.max(0,generation-served)*dt;
+      for(const b of batteries){const amount=Math.min(surplus,300-b.charge,36*dt);b.charge=clamp(b.charge+amount,0,300);surplus-=amount;flow+=amount/dt;}
+    }else flow=generation>=served?Math.min(generation-served,batteries.reduce((n,b)=>n+Math.min(36,(300-b.charge)/dt),0)):-Math.max(0,served-generation);
+    for(const b of state.buildings) {
+      b.powered=powered.has(b.id);
+      if(!b.enabled)b.status='Выключено';
+      else if(!connected(state,b))b.status='Вне сети';
+      else if(!b.powered)b.status='Нет энергии';
+      else if(b.type==='solar_panel')b.status=day?'Выработка':'Ночь';
+      else if(b.type==='battery')b.status=b.charge>=300-EPS?'Заряжен':flow>EPS?'Зарядка':flow<-EPS?'Разрядка':b.charge>EPS?'Резерв':'Разряжен';
+      else b.status='Работает';
+    }
+    state.power={generation,demand,served,unserved:demand-served,flow,
+      charge:batteries.reduce((n,b)=>n+b.charge,0),capacity:batteries.length*300};
+  }
+  function productionSystem(state,dt,mutate=true) {
+    const inventory=mutate?state.inventory:{...state.inventory};
+    const rates=Object.fromEntries(RESOURCES.map(r=>[r,0]));
+    // Topological recipe order, independent of construction order or array order.
+    const sequence=['ice_extractor','water_purifier','oxygen_generator','greenhouse'];
+    for(const type of sequence) for(const b of state.buildings.filter(b=>b.type===type).sort((a,b)=>a.id-b.id)) {
+      b.efficiency=0;
+      if(!b.powered)continue;
+      const recipe=TYPES[type].recipePerSol, inputs=recipe.inputs||{}, outputs=recipe.outputs||{};
+      let factor=1, cause='Работает';
+      const d=type==='ice_extractor'?depositFor(state,b):null;
+      if(type==='ice_extractor'&&!d){factor=0;cause='Залежь исчерпана';}
+      if(d&&d.remaining/(18*dt/24)<factor){factor=d.remaining/(18*dt/24);cause='Залежь исчерпана';}
+      for(const [r,n] of Object.entries(inputs))if(inventory[r]/(n*dt/24)<factor){factor=inventory[r]/(n*dt/24);cause={ice:'Нет льда',water:'Нет воды'}[r]||'Нет сырья';}
+      for(const [r,n] of Object.entries(outputs))if((DATA.scenario.resourceCapacities[r]-inventory[r])/(n*dt/24)<factor){factor=(DATA.scenario.resourceCapacities[r]-inventory[r])/(n*dt/24);cause='Хранилище заполнено';}
+      factor=clamp(factor,0,1); b.efficiency=factor;
+      b.status=factor>=1-EPS?'Работает':cause;
+      for(const [r,n] of Object.entries(inputs)){inventory[r]=Math.max(0,inventory[r]-n*dt/24*factor);rates[r]-=n*factor;}
+      for(const [r,n] of Object.entries(outputs)){
+        inventory[r]=Math.min(DATA.scenario.resourceCapacities[r],inventory[r]+n*dt/24*factor);rates[r]+=n*factor;
+        if(mutate)b.produced[r]=(b.produced[r]||0)+n*dt/24*factor;
+      }
+      if(mutate&&factor>EPS){
+        if(d)d.remaining=Math.max(0,d.remaining-18*dt/24*factor);
+        b.lastOperationalAt=state.elapsedHours+dt; b.workedHours+=dt*factor;
+        for(const r of Object.keys(outputs))state.scenario.milestones['produced:'+r]=true;
+      }
+    }
+    return rates;
+  }
+  function populationSystem(state,dt,rates) {
+    const p=state.population;
+    if(p.alive===0)return;
+    let loss=0;
+    for(const [r,per] of Object.entries(DATA.population.consumptionPerColonistPerSol)) {
+      const need=per*p.alive*dt/24, used=Math.min(state.inventory[r],need);
+      state.inventory[r]=Math.max(0,state.inventory[r]-used);
+      rates[r]-=per*p.alive;
+      if(used+EPS<need)loss+=DATA.population.healthLossPointsPerGameHourWhenMissing[r]*(1-used/need);
+    }
+    if(loss>EPS)p.health=Math.max(0,p.health-loss*dt);
+    else p.health=Math.min(100,p.health+dt*(.12+.05*state.buildings.filter(b=>b.type==='habitat'&&b.powered).length));
+    if(p.health<EPS){p.health=0;p.alive=0;}
+  }
+  function scenarioSystem(state) {
+    if(emergencyRemaining(state)<=6 && emergencyRemaining(state)>0)notifyOnce(state,'reserve-warning','Аварийный источник отключится через 6 игровых часов. Подготовьте панель и аккумулятор.');
+    if(state.elapsedHours>=24-EPS)notifyOnce(state,'reserve-off','Топливо аварийного источника исчерпано. База перешла на собственное питание.');
+    for(const r of ['oxygen','water','food']){
+      if(state.rates[r]<-EPS&&state.inventory[r]/(-state.rates[r])*24<12)
+        notifyOnce(state,'low:'+r,`${{oxygen:'Кислорода',water:'Воды',food:'Пищи'}[r]} осталось меньше чем на 12 часов. Проверьте производство.`,'danger');
+    }
+    if(state.population.health<60)notifyOnce(state,'health-low','Здоровье экипажа ниже 60%. Восстановите запасы жизнеобеспечения.','danger');
+    if(state.population.alive===0&&!state.scenario.lost){state.scenario.lost=true;state.speed=0;addEvent(state,'Связь с колонией потеряна. Экипаж погиб.','danger');}
+    if(state.elapsedHours+EPS>=120&&!state.scenario.won&&!state.scenario.lost){
+      const working=REQUIRED.every(type=>state.buildings.some(b=>b.type===type&&b.enabled&&b.powered&&b.efficiency>EPS&&b.lastOperationalAt>=state.elapsedHours-1));
+      if(working&&['water','oxygen','food'].every(r=>state.inventory[r]>EPS)&&state.population.alive>0){
+        state.scenario.won=true;state.speed=0;addEvent(state,'Автономность достигнута. Пять солов пройдены.','success');
+      }
+    }
+  }
+  function refresh(state) {
+    powerSystem(state,DT,false);
+    const rates=productionSystem(state,DT,false);
+    for(const [r,per] of Object.entries(DATA.population.consumptionPerColonistPerSol))rates[r]-=per*state.population.alive;
+    state.rates=rates;
+  }
+  function step(state) {
+    if(state.scenario.lost)return;
+    powerSystem(state,DT,true);
+    const rates=productionSystem(state,DT,true);
+    populationSystem(state,DT,rates);
+    state.ticks++;state.elapsedHours=state.ticks*DT;state.rates=rates;
+    scenarioSystem(state);
+  }
+  class Clock {
+    constructor(state){this.state=state;this.accumulator=0;}
+    advance(realSeconds){
+      const state=this.state;
+      if(state.speed===0||state.scenario.lost)return 0;
+      this.accumulator+=Math.max(0,realSeconds)*.1*state.speed;
+      let n=0;
+      while(this.accumulator+EPS>=DT){
+        step(state);this.accumulator-=DT;n++;
+        if(state.speed===0){this.accumulator=0;break;}
+      }
+      return n;
+    }
+  }
+  function serialize(state) {
+    return JSON.stringify({schemaVersion:DATA.schemaVersion,gameVersion:VERSION,savedAt:new Date().toISOString(),state});
+  }
+  function deserialize(raw) {
+    let envelope;
+    try{envelope=JSON.parse(raw);}catch(e){throw new Error('Файл не содержит корректный JSON. Старое сохранение оставлено без изменений.');}
+    if(!envelope||envelope.schemaVersion!==DATA.schemaVersion)throw new Error('Несовместимая версия сохранения. Экспортируйте старую копию или начните новую игру.');
+    const s=envelope.state;
+    const fail=()=>{throw new Error('Сохранение повреждено: неверные данные колонии. Старую копию можно экспортировать.');};
+    if(!s||s.schemaVersion!==1||!Number.isInteger(s.ticks)||s.ticks<0||s.ticks>1e9||!finite(s.elapsedHours)||Math.abs(s.elapsedHours-s.ticks*DT)>1e-6)fail();
+    if(!s.world||s.world.width!==64||s.world.height!==64||!Array.isArray(s.world.tiles)||s.world.tiles.length!==4096||!Number.isInteger(s.mapSeed))fail();
+    if(!Array.isArray(s.world.deposits)||s.world.deposits.length>4096)fail();
+    const depositIds=new Set();
+    for(const d of s.world.deposits){if(!Number.isInteger(d.id)||depositIds.has(d.id)||!finite(d.remaining)||d.remaining<0||d.remaining>1e9)fail();depositIds.add(d.id);}
+    for(const t of s.world.tiles)if(!t||!['sand','rock','ice'].includes(t.terrain)||!finite(t.variation)||t.variation<0||t.variation>1||(t.depositId!==null&&!depositIds.has(t.depositId)))fail();
+    if(!s.inventory||!s.population)fail();
+    for(const r of RESOURCES)if(!finite(s.inventory[r])||s.inventory[r]<0||s.inventory[r]>DATA.scenario.resourceCapacities[r]+EPS)fail();
+    if(!Number.isInteger(s.population.alive)||s.population.alive<0||s.population.alive>8||!finite(s.population.health)||s.population.health<0||s.population.health>100)fail();
+    if(!Array.isArray(s.buildings)||s.buildings.length>1024||s.buildings.filter(b=>b.type==='landing_module').length!==1)fail();
+    const occupied=new Set(), ids=new Set();
+    for(const b of s.buildings){
+      if(!b||!TYPES[b.type]||!Number.isInteger(b.id)||b.id<=0||ids.has(b.id)||!Number.isInteger(b.x)||!Number.isInteger(b.y)||![0,1].includes(b.rotation)||typeof b.enabled!=='boolean'||!finite(b.charge)||b.charge<0||b.charge>300||!finite(b.workedHours)||b.workedHours<0||!finite(b.lastOperationalAt)||!b.produced)fail();
+      for(const [r,n]of Object.entries(b.produced))if(!RESOURCES.includes(r)||!finite(n)||n<0)fail();
+      ids.add(b.id);
+      for(const [x,y]of cells(b)){const k=key(x,y);if(x<0||y<0||x>=64||y>=64||occupied.has(k)||s.world.tiles[k].terrain==='rock')fail();occupied.add(k);}
+    }
+    if(!Number.isInteger(s.nextId)||s.nextId<=Math.max(...ids)||![0,1,2,4].includes(s.speed)||![1,2,4].includes(s.previousSpeed))fail();
+    if(!s.scenario||typeof s.scenario.won!=='boolean'||typeof s.scenario.lost!=='boolean'||typeof s.scenario.continued!=='boolean'||!s.scenario.milestones||!Array.isArray(s.scenario.notified)||s.scenario.notified.some(x=>typeof x!=='string'))fail();
+    if(!Array.isArray(s.events)||s.events.length>60||s.events.some(e=>!e||typeof e.text!=='string'||e.text.length>1000||!finite(e.hour)||!Number.isInteger(e.id)||!['info','warning','danger','success'].includes(e.level)))fail();
+    if(!s.settings||typeof s.settings.grid!=='boolean'||!s.settings.camera||!['x','y','zoom'].every(k=>finite(s.settings.camera[k])))fail();
+    s.settings.camera.zoom=clamp(s.settings.camera.zoom,.45,1.8);
+    s.settings.camera.x=clamp(s.settings.camera.x,-2350*s.settings.camera.zoom,2350*s.settings.camera.zoom);
+    s.settings.camera.y=clamp(s.settings.camera.y,-1300*s.settings.camera.zoom,1300*s.settings.camera.zoom);
+    if(s.population.alive===0&&!s.scenario.lost)fail();
+    for(const b of s.buildings)if(!connected(s,b))fail();
+    refresh(s);return s;
+  }
+  function project(x,y){return {x:(x-y)*34,y:(x+y)*17};}
+  function unproject(x,y){return {x:x/68+y/34,y:y/34-x/68};}
+  root.Frontier={DATA,VERSION,DT,EPS,TYPES,RESOURCES,REQUIRED,clone,clamp,rng,key,createState,generateWorld,makeBuilding,dimensions,cells,occupancy,connected,depositFor,placement,build,demolish,toggle,addEvent,hour,daylight,emergencyRemaining,powerSystem,productionSystem,populationSystem,scenarioSystem,refresh,step,Clock,serialize,deserialize,project,unproject};
+  if(typeof module!=='undefined')module.exports=root.Frontier;
+})(typeof globalThis!=='undefined'?globalThis:this);
+</script>
+<script>/* Projection, camera and procedural 2.5D art. Rendering never mutates the simulation. */
+(function(root){
+  'use strict';
+  const F=root.Frontier;
+  const palettes={sand:['#a16f55','#a87356','#ad795b','#a37257'],ice:['#879d9a','#91aaa5','#a3bab1'],rock:['#805847','#88604d','#91634d']};
+  function polygon(c,points,fill,stroke=null,width=1){
+    c.beginPath();points.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.closePath();
+    if(fill){c.fillStyle=fill;c.fill();}if(stroke){c.strokeStyle=stroke;c.lineWidth=width;c.stroke();}
+  }
+  function path(c,points,color,width=1){c.beginPath();points.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.strokeStyle=color;c.lineWidth=width;c.stroke();}
+  function local(u,v,z=0){return {x:(u-v)*34,y:(u+v)*17-z};}
+  function cube(c,x,y,w,d,h,colors,z=0){
+    const a=local(x,y,z+h),b=local(x+w,y,z+h),cc=local(x+w,y+d,z+h),dd=local(x,y+d,z+h);
+    polygon(c,[dd,cc,local(x+w,y+d,z),local(x,y+d,z)],colors[1]);
+    polygon(c,[b,cc,local(x+w,y+d,z),local(x+w,y,z)],colors[2]);
+    polygon(c,[a,b,cc,dd],colors[0],'#25394244',.7);
+    path(c,[dd,cc,b], '#e7e8d42e',.8);
+  }
+  function cylinder(c,x,y,r,h,colors,z=0){
+    const p=local(x,y,z), top={x:p.x,y:p.y-h}, rx=r*34,ry=r*17;
+    c.beginPath();c.ellipse(p.x,p.y,rx,ry,0,0,Math.PI);c.lineTo(top.x-rx,top.y);c.ellipse(top.x,top.y,rx,ry,0,Math.PI,Math.PI*2);c.closePath();
+    const gradient=c.createLinearGradient(p.x-rx,0,p.x+rx,0);gradient.addColorStop(0,colors[1]);gradient.addColorStop(.45,colors[0]);gradient.addColorStop(1,colors[2]);c.fillStyle=gradient;c.fill();
+    c.beginPath();c.ellipse(top.x,top.y,rx,ry,0,0,Math.PI*2);c.fillStyle=colors[0];c.fill();c.strokeStyle='#e5eee038';c.lineWidth=1;c.stroke();
+    c.beginPath();c.ellipse(p.x,p.y-h*.17,rx,ry,0,0,Math.PI);c.strokeStyle=colors[2];c.lineWidth=2;c.stroke();
+  }
+  function light(c,p,color,r=2){c.fillStyle=color;c.beginPath();c.arc(p.x,p.y,r,0,Math.PI*2);c.fill();}
+  function antenna(c,u,v,z){const p=local(u,v,z);path(c,[p,{x:p.x,y:p.y-26}], '#b9c5c0',2);path(c,[{x:p.x-9,y:p.y-21},{x:p.x,y:p.y-29},{x:p.x+9,y:p.y-21}],'#91a7ab',2);light(c,{x:p.x,y:p.y-29},'#f1b46a',1.8);}
+  function panel(c,x,y,w,d,z=0){
+    const corners=[local(x,y,z+7),local(x+w,y,z+7),local(x+w,y+d,z),local(x,y+d,z)];
+    polygon(c,corners,'#173e53','#90b3b6',1.4);
+    for(let i=1;i<6;i++)path(c,[local(x+w*i/6,y,z+7),local(x+w*i/6,y+d,z)],'#54869e',.65);
+    for(let i=1;i<4;i++)path(c,[local(x,y+d*i/4,z+7*(1-i/4)),local(x+w,y+d*i/4,z+7*(1-i/4))],'#54869e',.65);
+    const g=c.createLinearGradient(corners[0].x,corners[0].y,corners[2].x,corners[2].y);g.addColorStop(0,'#92d0d61a');g.addColorStop(.5,'#ffffff00');g.addColorStop(1,'#60bbd83b');polygon(c,corners,g);
+  }
+  function buildingArt(c,b,time=0){
+    const [w,d]=F.dimensions(b),type=b.type;
+    const on=b.powered&&b.enabled,accent=on?'#7de0c8':'#936851';
+    const pale=['#c5ccc4','#829493','#596f75'],metal=['#6e8990','#3e5861','#2c424e'];
+    // Foundation and a consistent cast shadow tie all silhouettes to the ground.
+    polygon(c,[local(.18,.22),local(w+.5,.2),local(w+.6,d+.2),local(.2,d+.2)],'#322e2b35');
+    cube(c,.05,.05,w-.1,d-.1,4,['#697572','#465854','#334a50']);
+    if(type==='landing_module'){
+      for(const [x,y] of [[.18,.3],[2.45,.3],[.18,2.4],[2.45,2.4]]){
+        cube(c,x,y,.37,.37,8,metal,3);cylinder(c,x+.18,y+.18,.13,14,metal,9);
+      }
+      cube(c,.44,.44,2.13,2.1,35,pale,11);
+      cube(c,.35,.85,.2,1.23,17,metal,18);cube(c,2.48,.85,.2,1.23,17,metal,18);
+      cube(c,.75,.68,1.53,1.48,7,['#d9dcd1','#a3b3af','#96a8a6'],46);
+      cube(c,1.11,1.05,.8,.67,3,['#5b737d','#46606c','#344b5a'],53);
+      for(let i=0;i<4;i++){
+        cube(c,.66+i*.43,2.55,.28,.025,7,['#92b8ba','#9cdae0','#558a99'],26);
+        path(c,[local(.63+i*.44,.46,16),local(.63+i*.44,.46,39)],'#627b80',1);
+      }
+      cube(c,1.2,2.56,.66,.25,15,metal,6);cube(c,1.2,2.8,.66,.2,5,metal,2);
+      antenna(c,.65,.69,53);
+      for(const [x,y] of [[.15,.15],[2.8,.15],[.15,2.8],[2.8,2.8]])light(c,local(x,y,8),accent,2);
+      const p=local(1.28,1.65,57);c.save();c.translate(p.x,p.y);c.rotate(.45);c.font='bold 9px Arial';c.fillStyle='#536a72';c.fillText('Р-01',0,0);c.restore();
+    }else if(type==='solar_panel'){
+      cube(c,.8,.7,.4,.6,14,metal,4);
+      panel(c,.08,.12,1.84,.77,23);panel(c,.08,1.05,1.84,.77,23);
+      path(c,[local(.12,1.95,5),local(1.86,1.95,5)],'#d2b27e',2);light(c,local(.12,1.95,7),accent,1.7);
+    }else if(type==='battery'){
+      cube(c,.2,.2,1.6,1.6,7,metal,4);
+      for(const y of [.45,1.08]){
+        cube(c,.34,y,1.3,.48,28,['#bec8bf','#799092','#526e78'],11);
+        cube(c,.39,y+.49,1.2,.03,6,['#516f70',on?'#6ccfb0':'#7f7060','#3d575d'],26);
+        for(let i=0;i<5;i++)cube(c,.45+i*.21,y+.02,.07,.42,1,metal,40);
+      }
+      cube(c,1.55,.66,.3,.57,18,metal,13);
+      light(c,local(1.88,1.17,25),accent,2);
+    }else if(type==='ice_extractor'){
+      cube(c,.23,.35,1.5,1.35,12,metal,4);
+      cylinder(c,.84,.96,.38,8,['#bf976e','#896a50','#664e42'],16);
+      const top=local(.84,.96,65);
+      for(const [x,y] of [[.38,.48],[1.34,.48],[.38,1.47],[1.34,1.47]])path(c,[local(x,y,17),top],'#b9c3b9',3);
+      path(c,[local(.84,.96,20),top],'#536c75',6);
+      for(let k=0;k<5;k++){
+        const p=local(.84,.96,22+k*6);path(c,[{x:p.x-4,y:p.y+Math.sin(time*5+k)*2},{x:p.x+4,y:p.y-Math.sin(time*5+k)*2}],on?'#e1b67b':'#8c8271',2);
+      }
+      cube(c,1.27,1.18,.43,.55,22,pale,17);light(c,local(1.58,1.75,32),accent,2);antenna(c,.3,.4,18);
+    }else if(type==='water_purifier'){
+      cube(c,.18,.18,1.05,1.58,23,pale,4);
+      for(const y of [.55,1.38])cylinder(c,1.52,y,.29,34,['#b9ccc7','#739a9e','#4d7483'],5);
+      cube(c,.28,.3,.82,1.28,5,metal,27);
+      for(let i=0;i<5;i++)path(c,[local(.38,.42+i*.21,33),local(1,.42+i*.21,33)],'#9ebac0',1.5);
+      path(c,[local(1.5,.5,22),local(1.5,1.4,22),local(.9,1.4,22)],'#78b4b4',3);
+      light(c,local(.88,1.79,20),accent,2);
+    }else if(type==='oxygen_generator'){
+      cube(c,.15,.16,.65,1.65,24,metal,4);
+      for(const y of [.43,1.01,1.57]){
+        cylinder(c,1.35,y,.25,37,pale,5);
+        const p=local(1.35,y,32);path(c,[{x:p.x-7,y:p.y},{x:p.x+7,y:p.y}],'#63b7bd',3);
+      }
+      for(let i=0;i<5;i++)path(c,[local(.25,.33+i*.28,29),local(.64,.33+i*.28,29)],'#94b6ba',1.5);
+      path(c,[local(1.35,.43,43),local(1.35,1.57,43)],'#77918d',3);light(c,local(.5,1.85,24),accent,2);
+    }else if(type==='greenhouse'){
+      cube(c,.15,.15,w-.3,d-.3,8,pale,4);
+      for(let i=0;i<6;i++){
+        cube(c,.32+i*(w-.65)/6,.3,.13,d-.6,3,['#659a71','#3f6f54','#2c5e4c'],13);
+        for(let j=0;j<4;j++)light(c,local(.37+i*(w-.65)/6,.4+j*(d-.8)/4,18),'#8eb478',2);
+      }
+      const roof=[];
+      for(let i=0;i<=8;i++){
+        const v=.13+(d-.26)*i/8,z=19+Math.sin(Math.PI*i/8)*29;
+        roof.push([local(.12,v,z),local(w-.12,v,z)]);
+      }
+      for(let i=0;i<8;i++)polygon(c,[roof[i][0],roof[i][1],roof[i+1][1],roof[i+1][0]],i<4?'#a4d0c14d':'#477b8866','#b8d4c18a',.7);
+      for(let k=0;k<6;k++)path(c,roof.map((p,i)=>local(.12+(w-.24)*k/5,.13+(d-.26)*i/8,19+Math.sin(Math.PI*i/8)*29)),'#d1dbca9c',1.4);
+      polygon(c,[local(w-.12,.13,12),...roof.map(r=>r[1]),local(w-.12,d-.13,12)],'#619b9c30','#b2cdc3',.8);
+      cube(c,w-.1,.67,.12,.65,13,metal,7);light(c,local(w+.03,1.1,23),accent,2);
+    }else if(type==='habitat'){
+      cube(c,.15,.25,1.7,1.5,31,pale,6);
+      cube(c,.32,.37,1.35,1.25,6,['#d3d7cd','#9aa9a1','#6c8384'],37);
+      cube(c,.25,1.77,.5,.03,10,['#8bb5ba',on?'#b1d6c9':'#617879','#688b9a'],22);
+      cube(c,.92,1.77,.5,.03,10,['#8bb5ba',on?'#b1d6c9':'#617879','#688b9a'],22);
+      cube(c,1.84,.75,.04,.5,20,metal,6);cube(c,1.85,.76,.08,.05,20,['#da9a6e','#bc855f','#8a6759'],6);
+      panel(c,.6,.58,.8,.6,47);light(c,local(1.9,1.68,12),accent,2);
+    }
+    if(on&&type!=='solar_panel'&&type!=='battery'){
+      const p=local(w-.13,d-.13,7);c.save();c.globalAlpha=.16+.08*Math.sin(time*2);c.fillStyle='#8bdbbf';c.beginPath();c.ellipse(p.x,p.y,9,4,0,0,Math.PI*2);c.fill();c.restore();
+    }
+  }
+  class Renderer{
+    constructor(canvas,getState){
+      this.canvas=canvas;this.c=canvas.getContext('2d',{alpha:false});this.getState=getState;
+      this.camera={x:0,y:0,zoom:1.1};this.width=0;this.height=0;this.hover=null;this.selected=null;this.buildType=null;this.rotation=0;this.selectionTile=null;this.fps=60;
+      this.terrain=null;this.seed=null;this.centerWorld=F.project(32.5,32.5);this.resize();
+    }
+    resize(){const r=this.canvas.getBoundingClientRect();this.width=r.width;this.height=r.height;this.dpr=Math.min(window.devicePixelRatio||1,2);this.canvas.width=Math.round(r.width*this.dpr);this.canvas.height=Math.round(r.height*this.dpr);}
+    origin(){return {x:this.width*.5+this.camera.x,y:this.height*.49-this.centerWorld.y*this.camera.zoom+this.camera.y};}
+    worldToScreen(p){const o=this.origin();return{x:o.x+p.x*this.camera.zoom,y:o.y+p.y*this.camera.zoom};}
+    screenToWorld(x,y){const o=this.origin();return{x:(x-o.x)/this.camera.zoom,y:(y-o.y)/this.camera.zoom};}
+    tileAt(x,y){const p=this.screenToWorld(x,y),t=F.unproject(p.x,p.y);return{x:Math.floor(t.x+1e-9),y:Math.floor(t.y+1e-9)};}
+    pickBuilding(x,y){
+      const point=this.screenToWorld(x,y),state=this.getState();
+      const height={landing_module:58,solar_panel:31,battery:43,ice_extractor:68,water_purifier:40,oxygen_generator:45,greenhouse:50,habitat:48};
+      const cross=(o,a,b)=>(a.x-o.x)*(b.y-o.y)-(a.y-o.y)*(b.x-o.x);
+      const sorted=[...state.buildings].sort((a,b)=>{const[aw,ad]=F.dimensions(a),[bw,bd]=F.dimensions(b);return (b.x+bw+b.y+bd)-(a.x+aw+a.y+ad)||b.id-a.id;});
+      for(const b of sorted){
+        const[w,d]=F.dimensions(b),points=[];
+        for(const[u,v]of [[b.x,b.y],[b.x+w,b.y],[b.x+w,b.y+d],[b.x,b.y+d]])for(const z of [0,height[b.type]]){const p=F.project(u,v);p.y-=z;points.push(p);}
+        points.sort((a,b)=>a.x-b.x||a.y-b.y);
+        const lower=[],upper=[];
+        for(const p of points){while(lower.length>1&&cross(lower.at(-2),lower.at(-1),p)<=0)lower.pop();lower.push(p);}
+        for(const p of [...points].reverse()){while(upper.length>1&&cross(upper.at(-2),upper.at(-1),p)<=0)upper.pop();upper.push(p);}
+        const hull=[...lower.slice(0,-1),...upper.slice(0,-1)];let inside=false;
+        for(let i=0,j=hull.length-1;i<hull.length;j=i++){
+          const a=hull[i],q=hull[j];if((a.y>point.y)!==(q.y>point.y)&&point.x<(q.x-a.x)*(point.y-a.y)/(q.y-a.y)+a.x)inside=!inside;
+        }
+        if(inside)return b;
+      }
+      return null;
+    }
+    zoomAt(x,y,factor){const before=this.screenToWorld(x,y);this.camera.zoom=F.clamp(this.camera.zoom*factor,.45,1.8);const after=this.worldToScreen(before);this.camera.x+=x-after.x;this.camera.y+=y-after.y;this.boundCamera();}
+    boundCamera(){this.camera.x=F.clamp(this.camera.x,-2350*this.camera.zoom,2350*this.camera.zoom);this.camera.y=F.clamp(this.camera.y,-1300*this.camera.zoom,1300*this.camera.zoom);}
+    center(x=32.5,y=32.5){const p=F.project(x,y);this.camera.x=-p.x*this.camera.zoom;this.camera.y=(this.centerWorld.y-p.y)*this.camera.zoom;}
+    cacheTerrain(world){
+      const terrain=document.createElement('canvas');terrain.width=4420;terrain.height=2270;const c=terrain.getContext('2d');
+      c.translate(2210,48);
+      for(let sum=0;sum<127;sum++)for(let y=Math.max(0,sum-63);y<=Math.min(63,sum);y++){
+        const x=sum-y,t=world.tiles[F.key(x,y)],p=F.project(x,y);c.save();c.translate(p.x,p.y);
+        const v=t.variation,patch=Math.sin(x*.12+y*.14)*3+Math.sin(x*.41-y*.19)*2;
+        const base=t.terrain==='ice'?[130,157,153]:[165,116,88];
+        const delta=(v-.5)*5+patch;
+        polygon(c,[local(0,0),local(1,0),local(1,1),local(0,1)],`rgb(${base.map(n=>Math.round(n+delta)).join(',')})`);
+        if(t.terrain==='sand'){
+          if(v<.48){
+            c.globalAlpha=.23;for(let k=0;k<3;k++)path(c,[{x:-13+k*5,y:14+k*3},{x:3+k*5,y:10+k*3},{x:15+k*4,y:14+k*3}],'#dbc2a0',.65);c.globalAlpha=1;
+          }
+          if(v>.86&&Math.hypot(x-32,y-32)>3){
+            const h=2+v*3;polygon(c,[{x:-5,y:14},{x:2,y:10-h},{x:10,y:14},{x:3,y:19}],'#7c6150');polygon(c,[{x:-5,y:14},{x:2,y:10-h},{x:5,y:13}],'#bf9677');
+          }
+        }else if(t.terrain==='ice'){
+          polygon(c,[{x:-23,y:17},{x:-6,y:5},{x:18,y:11},{x:25,y:20},{x:3,y:30},{x:-15,y:24}],'#b0c7bd77');
+          path(c,[{x:-17,y:16},{x:0,y:17},{x:5,y:23},{x:19,y:21}],'#d9e4d273',1);
+          if(v>.36)for(let k=0;k<3;k++){
+            const px=-7+k*8,py=13+k*2,h=7+v*9;
+            polygon(c,[{x:px-3,y:py},{x:px,y:py-h},{x:px+5,y:py-1},{x:px+1,y:py+4}],'#aacfc6');polygon(c,[{x:px,y:py-h},{x:px+5,y:py-1},{x:px+1,y:py+4}],'#6d9ca4');
+          }
+        }else{
+          const h=12+v*30;
+          polygon(c,[{x:-21,y:19},{x:-15,y:2-h},{x:5,y:-h},{x:25,y:13-h*.4},{x:28,y:22},{x:1,y:33}],'#785747');
+          polygon(c,[{x:-15,y:2-h},{x:5,y:-h},{x:25,y:13-h*.4},{x:3,y:13-h*.4}],'#b18a69');
+          polygon(c,[{x:-21,y:19},{x:-15,y:2-h},{x:3,y:13-h*.4},{x:1,y:33}],'#997255');
+          path(c,[{x:-14,y:3-h},{x:4,y:1-h},{x:24,y:14-h*.4}],'#cfaa7c66',1);
+        }
+        c.restore();
+      }
+      this.terrain=terrain;this.seed=world.seed;
+    }
+    tileShape(c,x,y,fill,stroke,width=1){polygon(c,[F.project(x,y),F.project(x+1,y),F.project(x+1,y+1),F.project(x,y+1)],fill,stroke,width);}
+    footprint(c,b,fill,stroke,width=1){const[w,d]=F.dimensions(b);polygon(c,[F.project(b.x,b.y),F.project(b.x+w,b.y),F.project(b.x+w,b.y+d),F.project(b.x,b.y+d)],fill,stroke,width);}
+    render(time){
+      const state=this.getState(),c=this.c;
+      if(!this.terrain||this.seed!==state.world.seed)this.cacheTerrain(state.world);
+      c.setTransform(this.dpr,0,0,this.dpr,0,0);c.fillStyle='#5c4439';c.fillRect(0,0,this.width,this.height);
+      const o=this.origin(),z=this.camera.zoom;
+      c.save();c.translate(o.x,o.y);c.scale(z,z);c.drawImage(this.terrain,-2210,-48);
+      if(state.settings.grid||this.buildType){
+        const a=this.tileAt(0,0),b=this.tileAt(this.width,0),d=this.tileAt(this.width,this.height),e=this.tileAt(0,this.height);
+        const x0=Math.max(0,Math.min(a.x,b.x,d.x,e.x)-1),x1=Math.min(63,Math.max(a.x,b.x,d.x,e.x)+1),y0=Math.max(0,Math.min(a.y,b.y,d.y,e.y)-1),y1=Math.min(63,Math.max(a.y,b.y,d.y,e.y)+1);
+        for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++){
+          const inRange=Math.hypot(x+.5-32.5,y+.5-32.5)<=10;
+          this.tileShape(c,x,y,this.buildType&&inRange?'#a4e3d40c':null,this.buildType&&inRange?'#b5e7d63b':'#f5ddbd12',.65);
+        }
+      }
+      if(this.buildType){
+        const p=F.project(32.5,32.5);c.save();c.translate(p.x,p.y);c.scale(1,.5);c.beginPath();c.arc(0,0,10*34*Math.SQRT2,0,Math.PI*2);c.strokeStyle='#a0dfcf8c';c.lineWidth=1.6;c.setLineDash([8,7]);c.stroke();c.restore();
+      }
+      // Thin physical service conduits remain purely visual in the MVP shared bus.
+      for(const b of state.buildings.filter(b=>b.type!=='landing_module')){
+        const[w,d]=F.dimensions(b),a=F.project(32.5,32.5),mid=F.project(b.x+w/2,32.5),end=F.project(b.x+w/2,b.y+d/2);
+        path(c,[a,mid,end],'#423e3560',4);path(c,[a,mid,end],b.powered?'#c8b28e4a':'#88766048',1.2);
+      }
+      if(this.selectionTile&&!this.selected&&!this.buildType)this.tileShape(c,this.selectionTile.x,this.selectionTile.y,'#90d9db22','#a5e7e0bb',1.5);
+      const objects=[...state.buildings].sort((a,b)=>{const[aw,ad]=F.dimensions(a),[bw,bd]=F.dimensions(b);return (a.x+aw+a.y+ad)-(b.x+bw+b.y+bd)||a.id-b.id;});
+      for(const b of objects){
+        const p=F.project(b.x,b.y),[w,d]=F.dimensions(b),screen=this.worldToScreen(p);
+        if(screen.x< -250||screen.x>this.width+250||screen.y< -100||screen.y>this.height+250)continue;
+        if(b.id===this.selected){this.footprint(c,b,'#78d7cf20','#b8ebe0',1.7);}
+        c.save();c.translate(p.x,p.y);if(!b.enabled)c.globalAlpha=.68;buildingArt(c,b,time);c.restore();
+        if(!b.powered||!b.enabled||['Нет воды','Нет льда','Залежь исчерпана'].includes(b.status)){
+          const p=F.project(b.x+w/2,b.y+d/2);p.y-=68;light(c,p,b.enabled?'#e6b476':'#85949a',6/z);c.font=`bold ${9/z}px Arial`;c.textAlign='center';c.fillStyle='#283139';c.fillText(b.enabled?'!':'Ⅱ',p.x,p.y+3/z);
+        }
+      }
+      if(this.buildType&&this.hover){
+        const check=F.placement(state,this.buildType,this.hover.x,this.hover.y,this.rotation),color=check.ok?'#8bdfae':'#ef8d80';
+        const ghost=F.makeBuilding(this.buildType,this.hover.x,this.hover.y,0,this.rotation);ghost.powered=true;
+        for(const[x,y]of F.cells(ghost))this.tileShape(c,x,y,check.ok?'#70e5aa38':'#f07e6b38',color,1.4);
+        const p=F.project(ghost.x,ghost.y);c.save();c.translate(p.x,p.y);c.globalAlpha=.65;buildingArt(c,ghost,time);c.restore();
+        const[w,d]=F.dimensions(ghost),label=F.project(ghost.x+w/2,ghost.y+d/2);label.y-=90;
+        c.save();c.translate(label.x,label.y);c.scale(1/z,1/z);c.font='12px Arial';c.textAlign='center';const tw=c.measureText(check.reason).width;c.fillStyle='#132029ed';c.fillRect(-tw/2-12,-18,tw+24,28);c.fillStyle=color;c.fillText(check.reason,0,0);c.restore();
+      }else if(this.hover&&this.hover.x>=0&&this.hover.y>=0&&this.hover.x<64&&this.hover.y<64){
+        this.tileShape(c,this.hover.x,this.hover.y,'#eee1c812','#ecedd333');
+      }
+      c.restore();
+      // Uniform blue-hour light makes night legible without hiding buildable terrain.
+      const h=F.hour(state),night=h<6||h>=18;
+      if(night){c.fillStyle='#102e5666';c.fillRect(0,0,this.width,this.height);c.save();c.globalCompositeOperation='screen';for(const b of state.buildings.filter(b=>b.powered)){
+        const[w,d]=F.dimensions(b),p=this.worldToScreen(F.project(b.x+w/2,b.y+d/2));p.y-=20*z;
+        const glow=c.createRadialGradient(p.x,p.y,0,p.x,p.y,80*z);glow.addColorStop(0,'#79dfdb20');glow.addColorStop(1,'#79dfdb00');c.fillStyle=glow;c.fillRect(p.x-80*z,p.y-80*z,160*z,160*z);
+      }c.restore();}
+      const shade=c.createRadialGradient(this.width*.5,this.height*.5,this.width*.15,this.width*.5,this.height*.5,this.width*.7);shade.addColorStop(0,'#14243100');shade.addColorStop(1,'#14243175');c.fillStyle=shade;c.fillRect(0,0,this.width,this.height);
+      // A little airborne dust, deterministic and cosmetic.
+      c.fillStyle=night?'#c6d8dc30':'#f0d9ad44';for(let i=0;i<22;i++){const x=(i*197.3+time*(2+i%3))%this.width,y=(i*103.7+Math.sin(time*.13+i)*17)%this.height;c.fillRect(x,y,i%4===0?2:1,1);}
+    }
+    minimap(canvas){
+      const state=this.getState(),c=canvas.getContext('2d');c.clearRect(0,0,160,100);c.fillStyle='#101e28';c.fillRect(0,0,160,100);
+      const scale=1.42,ox=34,oy=5;
+      for(let y=0;y<64;y++)for(let x=0;x<64;x++){const t=state.world.tiles[F.key(x,y)];c.fillStyle=t.terrain==='ice'?'#91c9c4':t.terrain==='rock'?'#6c5a4c':'#9d7a5b';c.fillRect(ox+x*scale,oy+y*scale,scale+.3,scale+.3);}
+      c.beginPath();c.arc(ox+32.5*scale,oy+32.5*scale,10*scale,0,Math.PI*2);c.strokeStyle='#86d2c9';c.lineWidth=.7;c.stroke();
+      for(const b of state.buildings){const[w,d]=F.dimensions(b);c.fillStyle=b.id===this.selected?'#ffffff':b.powered?'#b8e6da':'#d79b76';c.fillRect(ox+b.x*scale,oy+b.y*scale,w*scale,d*scale);}
+      c.beginPath();[[0,0],[this.width,0],[this.width,this.height],[0,this.height]].forEach(([x,y],i)=>{const p=this.screenToWorld(x,y),t=F.unproject(p.x,p.y);i?c.lineTo(ox+t.x*scale,oy+t.y*scale):c.moveTo(ox+t.x*scale,oy+t.y*scale);});c.closePath();c.strokeStyle='#e0dfc396';c.lineWidth=.7;c.stroke();
+    }
+  }
+  function drawThumbnail(canvas,type){const c=canvas.getContext('2d');canvas.width=160;canvas.height=110;c.clearRect(0,0,160,110);const b=F.makeBuilding(type,0,0,0);b.powered=true;const[w,d]=F.dimensions(b);const scale=type==='landing_module'?.63:.82;c.translate(80-(w-d)*17*scale,42);c.scale(scale,scale);buildingArt(c,b,0);}
+  root.FrontierArt={Renderer,buildingArt,drawThumbnail};
+})(globalThis);
+</script>
+<script>/* DOM adapter, input commands and persistence. All economy stays in core.js. */
+(function(){
+  'use strict';
+  const F=Frontier,Art=FrontierArt,$=id=>document.getElementById(id);
+  const LABEL={water:'Вода',oxygen:'Кислород',food:'Пища',ice:'Лёд',metal:'Металл',electronics:'Электроника'};
+  const SHORT={solar_panel:'Солнечная панель',battery:'Аккумулятор',ice_extractor:'Добытчик льда',water_purifier:'Очиститель воды',oxygen_generator:'Генератор O₂',greenhouse:'Теплица',habitat:'Жилой модуль'};
+  const DESCR={landing_module:'Центр колонии. 8 жилых мест, общий склад и аварийная генерация на первые 24 часа.',solar_panel:'Вырабатывает 36 кВт с 06:00 до 18:00. Ночью не работает.',battery:'Запас 300 кВт·ч, мощность до 36 кВт. Строится разряженным.',ice_extractor:'Добывает 18 льда за сол. Ставится на конечную залежь.',water_purifier:'Перерабатывает 16 льда в 16 воды за сол.',oxygen_generator:'Из 2 воды производит 12 кислорода за сол.',greenhouse:'Потребляет 3 воды, выращивает 6 пищи за сол.',habitat:'Ещё 8 жилых мест. При питании помогает восстановлению здоровья.'};
+  const iconPaths={
+    water:'M12 2C9 7 5 10 5 14a7 7 0 0 0 14 0c0-4-4-7-7-12Z M8 14a4 4 0 0 0 4 4',
+    oxygen:'M6 8h7v8H6z M8 5h3v3 M17 11h3v3h-3v3h3 M8 12h3',
+    food:'M12 21V9 M12 15C4 15 3 9 3 5c7 0 9 4 9 10Z M12 11c0-6 4-8 9-8 0 5-3 9-9 8Z',
+    ice:'M12 2v20 M3.3 7l17.4 10 M3.3 17 20.7 7 M8 4l4 4 4-4 M8 20l4-4 4 4 M3 11l5-1-1-5 M21 13l-5 1 1 5 M3 13l5 1-1 5 M21 11l-5-1 1-5',
+    metal:'m12 3 9 5v9l-9 5-9-5V8l9-5Z M3 8l9 5 9-5 M12 13v9 M7 6l9 5',
+    electronics:'M6 6h12v12H6z M9 9h6v6H9z M9 2v4 M15 2v4 M9 18v4 M15 18v4 M2 9h4 M2 15h4 M18 9h4 M18 15h4',
+    crew:'M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z M2 21v-3c0-5 12-5 12 0v3 M16 4a4 4 0 0 1 0 8 M17 15c4 0 5 2 5 6',
+    bolt:'m13 2-9 12h7l-1 8 10-13h-8l1-7Z',
+    battery:'M2 6h18v12H2z M20 10h2v4h-2 M5 9v6 M9 9v6 M13 9v6',
+    save:'M3 3h15l3 3v15H3V3Z M7 3v6h10V3 M7 21v-8h10v8',
+    menu:'M4 6h16 M4 12h16 M4 18h16',
+    target:'M12 2v5 M12 17v5 M2 12h5 M17 12h5 M12 6a6 6 0 1 0 0 12 6 6 0 0 0 0-12Z M12 11v2',
+    grid:'M3 3h18v18H3z M9 3v18 M15 3v18 M3 9h18 M3 15h18',
+    build:'m12 2 10 6-10 6L2 8l10-6Z M2 12l10 6 10-6 M2 16l10 6 10-6'
+  };
+  const icon=name=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${iconPaths[name]||iconPaths.build}"/></svg>`;
+  const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const fmt=(n,d=1)=>n.toLocaleString('ru-RU',{minimumFractionDigits:0,maximumFractionDigits:d});
+  const timeLabel=s=>{const minutes=(Math.floor((8+s.elapsedHours)*60+1e-5))%1440;return `${String(Math.floor(minutes/60)).padStart(2,'0')}:${String(minutes%60).padStart(2,'0')}`;};
+  const solLabel=s=>String(Math.floor((8+s.elapsedHours+1e-8)/24)+1).padStart(2,'0');
+  const eventTime=h=>{const m=Math.floor((8+h)*60+1e-4);return `СОЛ ${String(Math.floor(m/1440)+1).padStart(2,'0')} · ${String(Math.floor(m/60)%24).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;};
+  const SAVE_KEY='last-frontier-save-v1',BACKUP_KEY='last-frontier-backup-v1';
+  let state,clock,renderer,category='all',buildType=null,rotation=0,selectedId=null,selectedTile=null;
+  let protectedSave=false,storageError='',rawSave=null,dialogMode='',lastEventId=0,lastSol=0,seenWon=false,seenLost=false,lastAutosave=performance.now();
+  const held=new Set();let pointer=null,dragging=false,lastUi=0;
+  function toast(message,kind='info'){
+    const el=document.createElement('div');el.className='toast '+kind;el.textContent=message;el.setAttribute('role','status');
+    const modalBody=$('modal').open?$('modal-content').querySelector('.modal-inner'):null;
+    if(modalBody){el.classList.add('modal-alert');const anchor=modalBody.querySelector('.menu-grid,.modal-actions,.action-button.full');modalBody.insertBefore(el,anchor||null);}else $('toasts').appendChild(el);
+    setTimeout(()=>el.remove(),5000);
+  }
+  function readSave(){
+    try{rawSave=localStorage.getItem(SAVE_KEY);if(rawSave)return F.deserialize(rawSave);}catch(e){protectedSave=!!rawSave;storageError=e.message;}
+    return null;
+  }
+  const loaded=readSave();state=loaded||F.createState();clock=new F.Clock(state);
+  renderer=new Art.Renderer($('world'),()=>state);renderer.camera={...state.settings.camera};
+  function recordCamera(){state.settings.camera={...renderer.camera};}
+  function save(manual=false){
+    if(protectedSave){if(manual)toast('Повреждённый файл защищён. Откройте меню для экспорта или новой игры.','warning');return false;}
+    try{recordCamera();localStorage.setItem(SAVE_KEY,F.serialize(state));$('save-status').innerHTML=`Сохранено в ${new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})} <i>●</i>`;lastAutosave=performance.now();if(manual)toast('Колония сохранена');return true;}
+    catch(e){$('save-status').textContent='Автосохранение недоступно';if(manual)toast('Браузер запретил сохранение. Экспортируйте JSON через меню.','warning');return false;}
+  }
+  function download(text,name,type='application/json'){
+    const url=URL.createObjectURL(new Blob([text],{type})),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),3000);
+  }
+  function exportSave(){recordCamera();download(protectedSave&&rawSave?rawSave:F.serialize(state),protectedSave?'rubezh-recovery.json':`rubezh-sol-${solLabel(state)}.json`);toast('Сохранение экспортировано');}
+  function replaceState(next){
+    state=next;clock=new F.Clock(state);renderer.camera={...state.settings.camera};renderer.terrain=null;
+    select(null);setBuild(null);held.clear();pointer=null;lastSol=Math.floor((8+state.elapsedHours)/24);lastEventId=state.events[0]?.id||0;seenWon=state.scenario.won;seenLost=state.scenario.lost;updateUI(true);
+  }
+  function setSpeed(n){if(state.scenario.lost)return;if(n!==0)state.previousSpeed=n;state.speed=n;clock.accumulator=0;updateUI(true);}
+  function pauseToggle(){setSpeed(state.speed===0?state.previousSpeed||1:0);}
+  function select(id,tile=null){selectedId=id;selectedTile=tile;renderer.selected=id;renderer.selectionTile=tile;updateInspector();}
+  function setBuild(type){
+    buildType=type;rotation=0;renderer.buildType=type;renderer.rotation=0;renderer.hover=null;
+    if(type){select(null);$('build-dock').classList.remove('collapsed');$('world').style.cursor='crosshair';$('build-hint').hidden=false;
+      $('build-hint').innerHTML=`${esc(SHORT[type])}<small><kbd>ЛКМ</kbd> построить · <kbd>R</kbd> повернуть · <kbd>Esc / ПКМ</kbd> отменить</small>`;
+    }else{$('world').style.cursor='grab';$('build-hint').hidden=true;}
+    document.querySelectorAll('.build-card').forEach(b=>{const a=b.dataset.type===type;b.classList.toggle('active',a);b.setAttribute('aria-pressed',String(a));});
+  }
+  function centerOn(b){const[w,d]=F.dimensions(b);renderer.center(b.x+w/2,b.y+d/2);}
+  function closeModal(){if($('modal').open)$('modal').close();dialogMode='';held.clear();clock.accumulator=0;}
+  function showModal(mode,html){
+    dialogMode=mode;held.clear();pointer=null;clock.accumulator=0;$('modal-content').innerHTML=`<div class="modal-inner">${html}</div>`;
+    if(!$('modal').open)$('modal').showModal();
+  }
+  function intro(){showModal('intro',`<div class="modal-kicker">РУБЕЖ-1 / ПРОТОКОЛ ВЫСАДКИ</div><h2 id="modal-title">Здесь начинается<br>новый мир.</h2><p>Кеплер-186f. Восемь человек. Связь с Землёй потеряна.<br>У вас есть всё, чтобы построить первый автономный форпост.</p><div class="intro-step"><span class="intro-number">01</span><div><b>Обеспечьте питание</b><p>Панель даёт энергию днём, батарея сохраняет её на ночь. Аварийный источник отключится через 24 игровых часа.</p></div></div><div class="intro-step"><span class="intro-number">02</span><div><b>Замкните цепочку жизни</b><p>Добытчик на голубой залежи → очиститель воды → генератор O₂ и теплица. Стройте в радиусе 10 клеток от базы.</p></div></div><div class="intro-step"><span class="intro-number">03</span><div><b>Выдержите пять солов</b><p>Один сол — 4 минуты на ×1. Пробел ставит игру на паузу; строить можно и на паузе. Во время этого инструктажа время остановлено.</p></div></div><div class="modal-actions"><button class="action-button" data-modal="skip">Пропустить</button><button class="action-button primary" data-modal="start">Начать высадку →</button></div>`);}
+  function menu(){showModal('menu',`<div class="modal-kicker">УПРАВЛЕНИЕ ЭКСПЕДИЦИЕЙ</div><h2 id="modal-title">Колония на связи</h2><p>Сол ${solLabel(state)}, ${timeLabel(state)}. Время остановлено, пока меню открыто.</p><div class="menu-grid"><button class="action-button" data-modal="save">Сохранить</button><button class="action-button" data-modal="load">Загрузить сохранение</button><button class="action-button" data-modal="export">Экспорт JSON</button><button class="action-button" data-modal="import">Импорт JSON</button><button class="action-button" data-modal="help">Управление</button><button class="action-button danger" data-modal="new">Новая экспедиция</button></div><p style="font-size:10px">Автосохранение: каждые 30 секунд, при строительстве и на границе сола. Пока вкладка скрыта, симуляция стоит на паузе. Для переноса игры между браузерами используйте JSON.</p><button class="action-button primary full" data-modal="close">Вернуться к колонии</button>`);}
+  function confirmNew(){showModal('new',`<div class="modal-kicker">НОВАЯ ЭКСПЕДИЦИЯ</div><h2 id="modal-title">Начать с высадки?</h2><p>Текущая колония будет заменена. Предыдущее сохранение останется резервной копией в этом браузере. Вы также можете экспортировать его в JSON.</p><div class="modal-actions"><button class="action-button" data-modal="export">Экспортировать</button><button class="action-button" data-modal="menu">Отмена</button><button class="action-button danger" data-modal="confirm-new">Начать заново</button></div>`);}
+  function corruptModal(message){showModal('corrupt',`<div class="modal-kicker">ВОССТАНОВЛЕНИЕ ДАННЫХ</div><h2 id="modal-title">Сохранение недоступно</h2><p>${esc(message)}</p><p>Исходные данные не перезаписаны. Экспортируйте их перед началом новой экспедиции.</p><div class="modal-actions"><button class="action-button" data-modal="export">Экспортировать копию</button><button class="action-button primary" data-modal="new">Начать новую</button></div>`);}
+  function help(){showModal('help',`<div class="modal-kicker">БОРТОВОЙ СПРАВОЧНИК</div><h2 id="modal-title">Управление</h2><table class="controls-table"><tr><td>WASD / стрелки</td><td>Перемещение камеры</td></tr><tr><td>Перетаскивание / СКМ</td><td>Панорамирование</td></tr><tr><td>Колесо</td><td>Масштаб у курсора</td></tr><tr><td>ЛКМ</td><td>Выбор / строительство</td></tr><tr><td>R</td><td>Поворот фундамента</td></tr><tr><td>Esc / ПКМ</td><td>Отмена / снять выбор</td></tr><tr><td>Пробел / 1, 2, 3</td><td>Пауза / ×1, ×2, ×4</td></tr><tr><td>G / B / Home</td><td>Сетка / стройменю / база</td></tr><tr><td>Ctrl+S</td><td>Сохранение</td></tr></table><p>Постройка появляется сразу. Инфраструктура внутри радиуса базы использует общую сеть; видимые кабели служат её обозначением. Население учитывается общей численностью и здоровьем. Выигрыш: 120 часов от высадки и все четыре производственных здания действительно работают.</p><button class="action-button primary full" data-modal="close">Понятно</button>`);}
+  function showLog(){showModal('log',`<div class="modal-kicker">АРХИВ СОБЫТИЙ</div><h2 id="modal-title">Журнал колонии</h2><div class="modal-log">${state.events.map(e=>`<button class="event ${e.level}" data-log-building="${e.buildingId||''}"><small>${eventTime(e.hour)}</small>${esc(e.text)}</button>`).join('')}</div><div class="modal-actions"><button class="action-button primary" data-modal="close">Закрыть</button></div>`);}
+  function showCrew(){const housing=state.buildings.reduce((n,b)=>n+(F.TYPES[b.type].housingCapacity||0),0);showModal('crew',`<div class="modal-kicker">ЭКИПАЖ РУБЕЖА-1</div><h2 id="modal-title">${state.population.alive} жизней под защитой</h2><div class="stat-grid"><div><b>${state.population.alive} / ${housing}</b><span>ЖИЛЫЕ МЕСТА</span></div><div><b>${fmt(state.population.health)}%</b><span>СРЕДНЕЕ ЗДОРОВЬЕ</span></div></div><p>Суточная потребность экипажа: ${fmt(state.population.alive)} воды, ${fmt(state.population.alive)} кислорода, ${fmt(state.population.alive*.5)} пищи. При нехватке ресурсов здоровье постепенно снижается. При восстановлении запасов — медленно растёт.</p><p>В этой версии экипаж моделируется агрегированно, без отдельных профессий и перемещения людей.</p><button class="action-button primary full" data-modal="close">К колонии</button>`);}
+  function showResult(won){
+    showModal(won?'won':'lost',`<div class="modal-kicker">${won?'ПРОТОКОЛ АВТОНОМНОСТИ / ВЫПОЛНЕН':'ЭКСПЕДИЦИЯ ЗАВЕРШЕНА'}</div><h2 id="modal-title">${won?'Последний рубеж<br>стал первым домом.':'Колония замолчала.'}</h2><p>${won?'Пять полных солов. Цепочки жизнеобеспечения работают, экипаж жив. Теперь форпост может стать чем-то большим.':'Запасы жизнеобеспечения исчерпались, среднее здоровье экипажа достигло нуля. На следующей высадке начните с энергетики и батареи, затем создайте полный цикл воды, кислорода и пищи.'}</p><div class="stat-grid"><div><b>${state.population.alive}</b><span>КОЛОНИСТОВ</span></div><div><b>${fmt(state.elapsedHours/24,2)}</b><span>СОЛОВ ОТ ВЫСАДКИ</span></div></div><div class="modal-actions"><button class="action-button" data-modal="new">Новая экспедиция</button>${won?'<button class="action-button primary" data-modal="sandbox">Продолжить →</button>':'<button class="action-button" data-modal="close">Осмотреть колонию</button>'}</div>`);
+  }
+  document.querySelectorAll('[data-icon]').forEach(el=>el.innerHTML=icon(el.dataset.icon));
+  $('resource-list').innerHTML=F.RESOURCES.map(r=>`<div class="resource" data-resource="${r}" title="${LABEL[r]}. Запас и фактический баланс за сол."><span class="resource-icon">${icon(r)}</span><div><strong id="res-${r}">0</strong><span class="cap" id="cap-${r}"></span><span class="res-name">${r==='oxygen'?'КИСЛОРОД / O₂':LABEL[r].toUpperCase()}</span></div><span class="res-rate" id="rate-${r}"></span></div>`).join('');
+  function renderCards(){
+    const types=Object.values(F.TYPES).filter(t=>t.buildable&&(category==='all'||category===t.category));
+    $('build-cards').innerHTML=types.map(t=>`<button class="build-card${t.id===buildType?' active':''}" data-type="${t.id}" aria-pressed="${t.id===buildType}" title="${esc(t.name+' · '+DESCR[t.id])}"><span class="build-name">${SHORT[t.id]}</span><canvas aria-hidden="true"></canvas><span class="build-power">${t.id==='solar_panel'?'+36 кВт · днём':t.id==='battery'?'300 кВт·ч':t.powerDemandKw+' кВт · сеть'}</span><span class="cost-line"><span>${icon('metal')}${t.cost.metal}</span><span>${icon('electronics')}${t.cost.electronics}</span><span class="shortcut">${t.size.join('×')}</span></span></button>`).join('');
+    $('build-cards').querySelectorAll('.build-card').forEach(b=>Art.drawThumbnail(b.querySelector('canvas'),b.dataset.type));
+  }
+  function updateInspector(){
+    const panel=$('inspector'),b=state.buildings.find(b=>b.id===selectedId);const scroll=panel.scrollTop;
+    if(b){
+      const t=F.TYPES[b.type],recipe=t.recipePerSol,power=b.powered?t.powerDemandKw:0;
+      let rows=`<div class="detail-row"><span>Подключение</span><b>${F.connected(state,b)?'Общая сеть · '+F.dimensions(b).join('×'):'Вне радиуса'}</b></div>`;
+      if(t.powerDemandKw)rows+=`<div class="detail-row"><span>Энергопотребление</span><b>${power} / ${t.powerDemandKw} кВт</b></div>`;
+      if(b.type==='solar_panel')rows+=`<div class="detail-row"><span>Выработка</span><b>${b.enabled&&F.daylight(state)?36:0} кВт</b></div>`;
+      if(b.type==='battery')rows+=`<div class="detail-row"><span>Заряд</span><b>${fmt(b.charge)} / 300 кВт·ч</b></div><div class="detail-row"><span>Мощность инвертора</span><b>до 36 кВт</b></div>`;
+      if(b.type==='landing_module')rows+=`<div class="detail-row"><span>Аварийный резерв</span><b>${fmt(F.emergencyRemaining(state))} ч · ${F.emergencyRemaining(state)>0&&b.enabled?'15':'0'} кВт</b></div>`;
+      for(const [r,n]of Object.entries(recipe.inputs||{}))rows+=`<div class="detail-row"><span>Вход · ${LABEL[r]}</span><b>${fmt(n*b.efficiency)} / ${n} за сол</b></div>`;
+      for(const [r,n]of Object.entries(recipe.outputs||{}))rows+=`<div class="detail-row"><span>Выход · ${LABEL[r]}</span><b>${fmt(n*b.efficiency)} / ${n} за сол</b></div>`;
+      if(b.type==='ice_extractor'){const deposit=F.depositFor(state,b);rows+=`<div class="detail-row"><span>Льда в залежи</span><b>${deposit?fmt(deposit.remaining):'0'}</b></div>`;}
+      if(t.housingCapacity)rows+=`<div class="detail-row"><span>Жилые места</span><b>${t.housingCapacity}</b></div>`;
+      panel.hidden=false;panel.innerHTML=`<div class="section-head"><span>ОБЪЕКТ ${String(b.id).padStart(2,'0')}</span><button class="text-button" data-inspector="close" aria-label="Закрыть инспектор">×</button></div><h2>${t.name}</h2><div class="status-line ${!b.powered||b.efficiency===0&&F.REQUIRED.includes(b.type)?'warning':''}">${esc(b.status)}</div>${rows}<div class="inspector-actions"><button class="action-button" data-inspector="toggle">${b.enabled?'Отключить':'Включить'}</button>${b.type!=='landing_module'?'<button class="action-button danger" data-inspector="demolish">Снести</button>':''}</div>`;
+    }else if(selectedTile){
+      const{x,y}=selectedTile,t=state.world.tiles[F.key(x,y)];
+      if(!t){panel.hidden=true;return;}
+      const deposit=state.world.deposits.find(d=>d.id===t.depositId);
+      panel.hidden=false;panel.innerHTML=`<div class="section-head"><span>УЧАСТОК ${x} : ${y}</span><button class="text-button" data-inspector="close" aria-label="Закрыть инспектор">×</button></div><h2>${{sand:'Песчаное плато',rock:'Скальная порода',ice:'Месторождение льда'}[t.terrain]}</h2><p class="detail-note">${t.terrain==='rock'?'Скальная поверхность. Строительство на этом участке недоступно.':deposit?'Лёд под поверхностью. Для добычи поставьте ледодобывающую установку.':'Ровный грунт. Строительство возможно в рабочем радиусе базы.'}</p>${deposit?`<div class="detail-row"><span>Запас месторождения</span><b>${fmt(deposit.remaining)} ед.</b></div><div class="detail-row"><span>Тип ресурса</span><b>Конечный</b></div><button class="action-button full" data-inspector="extract">Построить добытчик</button>`:''}`;
+    }else panel.hidden=true;
+    panel.scrollTop=scroll;
+  }
+  const objectives=[
+    ['solar_panel','Установить солнечную панель','36 кВт в световой период'],
+    ['battery','Подключить аккумулятор','Ночной резерв энергии'],
+    ['ice_extractor','Начать добычу льда','Залежь к востоку от модуля'],
+    ['water_purifier','Получить чистую воду','Лёд → вода'],
+    ['oxygen_generator','Наладить O₂ и пищу','Генератор + теплица'],
+    ['survive','Пережить 5 полных солов','Сохранить жизнь и производство']
+  ];
+  function completed(){return [state.buildings.some(b=>b.type==='solar_panel'),state.buildings.some(b=>b.type==='battery'),!!state.scenario.milestones['produced:ice'],!!state.scenario.milestones['produced:water'],!!state.scenario.milestones['produced:oxygen']&&!!state.scenario.milestones['produced:food'],state.scenario.won];}
+  function updateUI(force=false){
+    const now=performance.now();if(!force&&now-lastUi<230)return;lastUi=now;
+    $('sol-time').innerHTML=`СОЛ ${solLabel(state)} <em>${timeLabel(state)}</em>`;
+    const day=F.daylight(state);$('sun-symbol').textContent=day?'☀':'☾';$('day-label').textContent=state.speed===0?'Симуляция на паузе':day?'Световой период':'Ночной период';
+    document.querySelectorAll('[data-speed]').forEach(b=>{b.classList.toggle('active',+b.dataset.speed===state.speed);b.setAttribute('aria-pressed',String(+b.dataset.speed===state.speed));});
+    $('pause-btn').textContent=state.speed===0?'▶':'Ⅱ';$('pause-btn').title=state.speed===0?'Продолжить · Пробел':'Пауза · Пробел';
+    for(const r of F.RESOURCES){
+      const v=state.inventory[r],rate=state.rates[r]||0;
+      $('res-'+r).textContent=fmt(v,v<10?1:0);$('cap-'+r).textContent=['metal','electronics'].includes(r)?'':'/ '+F.DATA.scenario.resourceCapacities[r];
+      $('rate-'+r).innerHTML=`${rate>1e-6?'+':''}${fmt(rate,1)}<small>/ сол</small>`;$('rate-'+r).classList.toggle('negative',rate<0);
+      const resource=document.querySelector(`[data-resource="${r}"]`);resource.classList.toggle('critical',rate<0&&v/(-rate)*24<12);
+      resource.title=`${LABEL[r]}: ${fmt(v,2)}. Баланс: ${rate>0?'+':''}${fmt(rate,2)} за сол.${rate<0?' Запаса при текущем балансе на '+fmt(v/(-rate)*24)+' ч.':''}`;
+    }
+    const housing=state.buildings.reduce((n,b)=>n+(F.TYPES[b.type].housingCapacity||0),0);
+    $('crew-count').innerHTML=`${state.population.alive} <small>/ ${housing}</small>`;$('health-text').textContent=fmt(state.population.health,0)+'%';$('health-fill').style.width=state.population.health+'%';
+    $('health-fill').style.background=state.population.health<60?'var(--red)':'var(--green)';
+    const p=state.power;$('generation').textContent=fmt(p.generation,1);$('demand').textContent=fmt(p.demand,1);$('demand').style.color=p.unserved>0?'var(--amber)':'';
+    $('battery-charge').textContent=fmt(p.charge,0)+' / '+fmt(p.capacity,0);$('battery-charge').title='Заряд, кВт·ч';$('battery-fill').style.width=(p.capacity?p.charge/p.capacity*100:0)+'%';
+    const note=F.emergencyRemaining(state)>0?`Аварийный источник: ${fmt(F.emergencyRemaining(state))} ч`:p.unserved>0?`Не запитано ${fmt(p.unserved)} кВт. Жизнеобеспечение в приоритете.`:p.flow>0?`Батареи заряжаются · +${fmt(p.flow)} кВт`:p.flow<0?`Питание от батарей · ${fmt(-p.flow)} кВт`:'Сеть стабильна · резервный источник исчерпан';
+    $('power-note').textContent=p.unserved>0?`Дефицит ${fmt(p.unserved)} кВт. `+note:note;
+    const done=completed(),first=done.indexOf(false);
+    $('objectives').innerHTML=objectives.map((o,i)=>`<button class="objective ${done[i]?'done':i===first?'current':''}" data-objective="${o[0]}" title="${o[2]}"><i>${done[i]?'✓':String(i+1).padStart(2,'0')}</i><span>${o[1]}${i===first?'<small>'+o[2]+'</small>':''}</span></button>`).join('');
+    $('mission-percent').textContent=Math.min(100,Math.floor(state.elapsedHours/120*100))+'%';$('mission-fill').style.width=Math.min(100,state.elapsedHours/120*100)+'%';
+    $('mission-elapsed').textContent=state.scenario.won?'Автономность достигнута · песочница':fmt(state.elapsedHours/24,2)+' / 5 солов в экспедиции';
+    $('event-feed').innerHTML=state.events.slice(0,2).map(e=>`<button class="event ${e.level}" data-event="${e.id}"><small>${eventTime(e.hour)}</small>${esc(e.text)}</button>`).join('');
+    $('building-count').textContent=String(state.buildings.length).padStart(2,'0');
+    document.querySelectorAll('.build-card').forEach(b=>b.classList.toggle('unaffordable',Object.entries(F.TYPES[b.dataset.type].cost).some(([r,n])=>state.inventory[r]<n)));
+    $('grid-btn').classList.toggle('active',state.settings.grid);$('grid-btn').setAttribute('aria-pressed',String(state.settings.grid));$('zoom-label').textContent=Math.round(renderer.camera.zoom*100)+'%';
+    updateInspector();renderer.minimap($('minimap'));
+    const newEvents=state.events.filter(e=>e.id>lastEventId);lastEventId=state.events[0]?.id||0;
+    newEvents.filter(e=>e.level==='warning'||e.level==='danger').reverse().forEach(e=>toast(e.text,e.level));
+    if(state.scenario.won&&!seenWon){seenWon=true;save();showResult(true);}if(state.scenario.lost&&!seenLost){seenLost=true;save();showResult(false);}
+  }
+  $('build-cards').addEventListener('click',e=>{const b=e.target.closest('[data-type]');if(b)setBuild(buildType===b.dataset.type?null:b.dataset.type);});
+  $('categories').addEventListener('click',e=>{const b=e.target.closest('[data-category]');if(!b)return;category=b.dataset.category;document.querySelectorAll('[data-category]').forEach(v=>v.classList.toggle('active',v===b));renderCards();});
+  $('objectives').addEventListener('click',e=>{
+    const t=e.target.closest('[data-objective]')?.dataset.objective;if(!t)return;
+    if(t==='survive'){toast('120 часов от высадки. Нужны положительные запасы и работающая цепочка льда, воды, O₂ и пищи.');return;}
+    const b=state.buildings.find(b=>b.type===t);if(b){setBuild(null);select(b.id);centerOn(b);}else setBuild(t);
+  });
+  $('inspector').addEventListener('click',e=>{
+    const action=e.target.closest('[data-inspector]')?.dataset.inspector,b=state.buildings.find(b=>b.id===selectedId);
+    if(action==='close'){select(null);return;}if(action==='extract'){setBuild('ice_extractor');return;}if(!b)return;
+    if(action==='toggle'){F.toggle(state,b.id);updateUI(true);save();}
+    if(action==='demolish'){
+      const refund=Object.entries(F.TYPES[b.type].cost).map(([r,n])=>fmt(n*.5)+' '+LABEL[r].toLowerCase()).join(', ');
+      showModal('demolish',`<div class="modal-kicker">ДЕМОНТАЖ ОБЪЕКТА ${b.id}</div><h2 id="modal-title">Снести сооружение?</h2><p>${F.TYPES[b.type].name}. Возврат: ${refund}. ${b.type==='battery'?'Накопленная энергия будет потеряна.':''}</p><div class="modal-actions"><button class="action-button" data-modal="close">Отмена</button><button class="action-button danger" data-demolish-id="${b.id}">Подтвердить снос</button></div>`);
+    }
+  });
+  $('modal-content').addEventListener('click',e=>{
+    const demolition=e.target.closest('[data-demolish-id]');if(demolition){F.demolish(state,+demolition.dataset.demolishId);closeModal();select(null);save();updateUI(true);return;}
+    const logBuilding=e.target.closest('[data-log-building]');if(logBuilding){const b=state.buildings.find(b=>b.id===+logBuilding.dataset.logBuilding);if(b){closeModal();setBuild(null);select(b.id);centerOn(b);}return;}
+    const a=e.target.closest('[data-modal]')?.dataset.modal;if(!a)return;
+    if(['close','skip','start'].includes(a)){closeModal();save();return;}
+    if(a==='menu'){menu();return;}if(a==='help'){help();return;}if(a==='new'){confirmNew();return;}
+    if(a==='confirm-new'){
+      try{const previous=localStorage.getItem(SAVE_KEY);if(previous)localStorage.setItem(BACKUP_KEY,previous);}catch(e){toast('Резервная копия недоступна. Используйте экспорт JSON.','warning');return;}
+      protectedSave=false;rawSave=null;replaceState(F.createState());closeModal();save();intro();return;
+    }
+    if(a==='save'){save(true);return;}if(a==='export'){exportSave();return;}
+    if(a==='import'){$('import-input').click();return;}
+    if(a==='load'){
+      try{const raw=localStorage.getItem(SAVE_KEY);if(!raw){toast('Сохранение ещё не создано','warning');return;}const next=F.deserialize(raw);replaceState(next);closeModal();toast('Сохранение загружено');}catch(e){toast(e.message,'danger');}return;
+    }
+    if(a==='sandbox'){state.scenario.continued=true;closeModal();setSpeed(1);save();}
+  });
+  $('import-input').addEventListener('change',async e=>{
+    const file=e.target.files[0];e.target.value='';if(!file)return;if(file.size>3000000){toast('Слишком большой файл: максимум 3 МБ','danger');return;}
+    try{const text=await file.text(),next=F.deserialize(text);
+      showModal('import-confirm',`<div class="modal-kicker">ИМПОРТ ЭКСПЕДИЦИИ</div><h2 id="modal-title">Продолжить эту колонию?</h2><p>Файл: ${esc(file.name)}. Сол ${solLabel(next)}, ${timeLabel(next)}; сооружений: ${next.buildings.length}. Текущая колония будет заменена. Старая копия останется резервной.</p><div class="modal-actions"><button class="action-button" data-modal="menu">Отмена</button><button class="action-button primary" id="confirm-import">Загрузить</button></div>`);
+      $('confirm-import').addEventListener('click',()=>{try{const previous=localStorage.getItem(SAVE_KEY);if(previous)localStorage.setItem(BACKUP_KEY,previous);}catch(e){toast('Браузер не разрешил резервную копию. Экспортируйте текущую игру.','warning');return;}protectedSave=false;rawSave=null;replaceState(next);closeModal();save();toast('Колония восстановлена из JSON');},{once:true});
+    }catch(error){toast(error.message,'danger');}
+  });
+  $('modal').addEventListener('cancel',e=>{if(['corrupt','new','import-confirm','won','lost'].includes(dialogMode)){e.preventDefault();return;}dialogMode='';clock.accumulator=0;held.clear();});
+  $('save-btn').addEventListener('click',()=>save(true));$('menu-btn').addEventListener('click',menu);$('log-btn').addEventListener('click',showLog);$('crew-btn').addEventListener('click',showCrew);
+  $('event-feed').addEventListener('click',e=>{const id=+e.target.closest('[data-event]')?.dataset.event;if(!id)return;const event=state.events.find(v=>v.id===id),b=state.buildings.find(b=>b.id===event?.buildingId);if(b){setBuild(null);select(b.id);centerOn(b);}else if(event.level==='warning'||event.level==='danger'){const cause=state.buildings.find(b=>!b.powered||['Нет воды','Нет льда'].includes(b.status));if(cause){setBuild(null);select(cause.id);centerOn(cause);}else toast(event.text,event.level);}});
+  $('mission-toggle').addEventListener('click',()=>{const body=$('mission-body');body.hidden=!body.hidden;$('mission-collapse').textContent=body.hidden?'+':'−';$('mission-toggle').setAttribute('aria-expanded',String(!body.hidden));});
+  $('dock-toggle').addEventListener('click',()=>{const c=$('build-dock').classList.toggle('collapsed');$('dock-toggle').textContent=c?'⌃':'⌄';});
+  document.querySelectorAll('[data-speed]').forEach(b=>b.addEventListener('click',()=>+b.dataset.speed===0?pauseToggle():setSpeed(+b.dataset.speed)));
+  $('center-btn').addEventListener('click',()=>renderer.center());$('zoom-in').addEventListener('click',()=>renderer.zoomAt(renderer.width/2,renderer.height/2,1.15));$('zoom-out').addEventListener('click',()=>renderer.zoomAt(renderer.width/2,renderer.height/2,1/1.15));$('grid-btn').addEventListener('click',()=>{state.settings.grid=!state.settings.grid;updateUI(true);});
+  function minimapClick(e){const r=$('minimap').getBoundingClientRect(),x=(e.clientX-r.left)*160/r.width,y=(e.clientY-r.top)*100/r.height;renderer.center(F.clamp((x-34)/1.42,0,64),F.clamp((y-5)/1.42,0,64));}
+  $('minimap').addEventListener('click',minimapClick);$('minimap').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){renderer.center();e.preventDefault();}});
+  const canvas=$('world');
+  function pointerCoords(e){const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
+  canvas.addEventListener('pointerdown',e=>{if(![0,1].includes(e.button))return;const p=pointerCoords(e);pointer={...p,startX:p.x,startY:p.y,button:e.button};dragging=false;canvas.setPointerCapture(e.pointerId);canvas.style.cursor='grabbing';});
+  canvas.addEventListener('pointermove',e=>{
+    const p=pointerCoords(e);if(pointer){const moved=Math.hypot(p.x-pointer.startX,p.y-pointer.startY);if(moved>5)dragging=true;
+      if(dragging){renderer.camera.x+=p.x-pointer.x;renderer.camera.y+=p.y-pointer.y;renderer.boundCamera();}pointer.x=p.x;pointer.y=p.y;
+    }renderer.hover=renderer.tileAt(p.x,p.y);
+  });
+  canvas.addEventListener('pointerup',e=>{
+    if(!pointer)return;const p=pointerCoords(e),click=!dragging&&pointer.button===0;pointer=null;dragging=false;canvas.style.cursor=buildType?'crosshair':'grab';
+    if(click){
+      const tile=renderer.tileAt(p.x,p.y);if(buildType){const result=F.build(state,buildType,tile.x,tile.y,rotation);if(!result.ok){toast(result.reason,'warning');return;}save();updateUI(true);}
+      else if(tile.x>=0&&tile.y>=0&&tile.x<64&&tile.y<64){const b=renderer.pickBuilding(p.x,p.y)||F.occupancy(state).get(F.key(tile.x,tile.y));select(b?.id||null,tile);}
+    }
+  });
+  canvas.addEventListener('pointercancel',()=>{pointer=null;dragging=false;});canvas.addEventListener('pointerleave',()=>{if(!pointer)renderer.hover=null;});
+  canvas.addEventListener('contextmenu',e=>{e.preventDefault();setBuild(null);select(null);});
+  canvas.addEventListener('wheel',e=>{e.preventDefault();const p=pointerCoords(e);renderer.zoomAt(p.x,p.y,Math.exp(-e.deltaY*.001));renderer.hover=renderer.tileAt(p.x,p.y);},{passive:false});
+  window.addEventListener('keydown',e=>{
+    const editing=/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable;if(editing)return;
+    if((e.ctrlKey||e.metaKey)&&e.code==='KeyS'){e.preventDefault();save(true);return;}
+    if($('modal').open)return;
+    const code=e.code;
+    if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Home'].includes(code))e.preventDefault();
+    if(['KeyW','KeyA','KeyS','KeyD','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(code))held.add(code);
+    if(e.repeat)return;
+    if(code==='Space')pauseToggle();
+    if(code==='Digit1')setSpeed(1);if(code==='Digit2')setSpeed(2);if(code==='Digit3')setSpeed(4);
+    if(code==='Escape'){if(buildType)setBuild(null);else select(null);}
+    if(code==='KeyG'){state.settings.grid=!state.settings.grid;updateUI(true);}
+    if(code==='KeyB')$('dock-toggle').click();if(code==='Home')renderer.center();
+    if(code==='KeyR'&&buildType){rotation=1-rotation;renderer.rotation=rotation;}
+  });window.addEventListener('keyup',e=>held.delete(e.code));window.addEventListener('blur',()=>{held.clear();pointer=null;});
+  window.addEventListener('resize',()=>renderer.resize());
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden){held.clear();if(state.speed>0){state.previousSpeed=state.speed;state.speed=0;}clock.accumulator=0;save();}
+    else{toast('Вкладка была скрыта. Симуляция на паузе — Пробел для продолжения.');updateUI(true);}
+  });
+  window.addEventListener('beforeunload',()=>save());
+  let lastFrame=performance.now();
+  function frame(now){
+    const real=Math.min(.25,Math.max(0,(now-lastFrame)/1000));lastFrame=now;
+    if(!$('modal').open&&!document.hidden){
+      if(held.size){const delta=real*420;renderer.camera.x+=(held.has('KeyA')||held.has('ArrowLeft')?delta:0)-(held.has('KeyD')||held.has('ArrowRight')?delta:0);renderer.camera.y+=(held.has('KeyW')||held.has('ArrowUp')?delta:0)-(held.has('KeyS')||held.has('ArrowDown')?delta:0);renderer.boundCamera();}
+      clock.advance(real);
+      const sol=Math.floor((8+state.elapsedHours)/24);if(sol!==lastSol){lastSol=sol;save();}else if(now-lastAutosave>30000)save();
+    }
+    renderer.render(now/1000);updateUI();requestAnimationFrame(frame);
+  }
+  renderCards();lastSol=Math.floor((8+state.elapsedHours)/24);lastEventId=state.events[0]?.id||0;seenWon=state.scenario.won;seenLost=state.scenario.lost;updateUI(true);requestAnimationFrame(frame);
+  if(protectedSave)corruptModal(storageError);else if(!loaded)intro();else {toast('Экспедиция восстановлена · сол '+solLabel(state));if(state.scenario.lost)showResult(false);else if(state.scenario.won&&!state.scenario.continued)showResult(true);}
+  // Read-only diagnostic surface for reproducing coordinates and inspecting the running build.
+  Object.defineProperty(window,'frontier',{value:Object.freeze({snapshot:()=>F.clone(state),camera:()=>({...renderer.camera}),tileAt:(x,y)=>renderer.tileAt(x,y),screenFor:(x,y)=>renderer.worldToScreen(F.project(x,y)),version:F.VERSION})});
+})();
+</script>
+</body>
+</html>
